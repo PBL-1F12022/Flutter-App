@@ -3,13 +3,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
+import 'package:pbl2022_app/constants/test_project_idea_list.dart' as pl;
+import 'package:pbl2022_app/models/project_pitch.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

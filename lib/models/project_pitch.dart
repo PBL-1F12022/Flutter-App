@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 class ProjectIdea {
   late String id;
   late String name;
