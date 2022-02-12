@@ -11,7 +11,7 @@ List projects = [
     description:
         "This is a sample project description that has a lot of words in it",
     askingPrice: 100000,
-    equity: 0.03,
+    equity: 30,
     owner: "test owner",
   ),
   ProjectIdea(

@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
-import 'package:pbl2022_app/constants/test_project_idea_list.dart' as pl;
-import 'package:pbl2022_app/models/project_pitch.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,8 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          headline1: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          headline2: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
+          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
           bodyText1: TextStyle(
             fontSize: 20,
           ),
