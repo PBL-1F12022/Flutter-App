@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          headline1: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          headline2: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
+          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
           bodyText1: TextStyle(
             fontSize: 20,
           ),
