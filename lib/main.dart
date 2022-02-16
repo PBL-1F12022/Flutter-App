@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
+import 'package:pbl2022_app/Screens/project_enter_screen.dart';
 import 'package:pbl2022_app/Screens/signup_screen.dart';
 
 void main() {

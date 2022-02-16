@@ -14,42 +14,56 @@ class SignupScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.all(30),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Name')),
+          padding: EdgeInsets.all(20),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+              ),
+            ),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(label: Text('Name')),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(label: Text('Email ID')),
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.length != 10) {
+                            return 'Check again!';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration:
+                            InputDecoration(label: Text('Contact number')),
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(label: Text('Password')),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Something\'s wrong')));
+                          }
+                          _formKey.currentState!.save();
+                        },
+                        child: Text('Sign Up'),
+                      )
+                    ],
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Email ID')),
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value!.length != 10) {
-                        return 'Check again!';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(label: Text('Contact number')),
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(label: Text('Password')),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Something\'s wrong')));
-                        }
-                        _formKey.currentState!.save();
-                      },
-                      child: Text('Sign Up'))
-                ],
+                ),
               ),
             ),
           ),

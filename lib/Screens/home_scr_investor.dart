@@ -12,6 +12,7 @@ class HomeScreenInvestor extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: Column(),
         appBar: AppBar(
           title: Text('Home screen'),
         ),
