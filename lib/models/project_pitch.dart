@@ -8,6 +8,7 @@ class ProjectIdea {
   final int askingPrice;
   final double equity;
   final String owner;
+  final String ownerName;
 
   ProjectIdea({
     required this.id,
@@ -16,5 +17,18 @@ class ProjectIdea {
     required this.askingPrice,
     required this.equity,
     required this.owner,
+    required this.ownerName,
   });
+
+  factory ProjectIdea.fromJson(Map<String, dynamic> json) {
+    return ProjectIdea(
+      owner: json['owner'],
+      id: json['_id'],
+      name: json['name'],
+      description: json['description'],
+      askingPrice: json['askingPrice'],
+      equity: json['equity'],
+      ownerName: json['ownerName'],
+    );
+  }
 }
