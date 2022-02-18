@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class EntrProfileCard extends StatelessWidget {
+class EnterProfileCard extends StatelessWidget {
   late final String id;
   late final String projName;
   late final String description;
   late final int askingPrice;
   late final double equity;
   late final String owner;
-  EntrProfileCard({
+  EnterProfileCard({
     this.askingPrice = 0,
     this.description = "",
     this.equity = 0,
