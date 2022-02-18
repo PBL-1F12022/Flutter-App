@@ -14,6 +14,7 @@ class SignupScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 200),
           padding: EdgeInsets.all(20),
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -31,10 +32,16 @@ class SignupScreen extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: InputDecoration(label: Text('Name')),
+                        decoration: InputDecoration(
+                          label: Text('Name'),
+                          icon: Icon(Icons.text_fields),
+                        ),
                       ),
                       TextFormField(
-                        decoration: InputDecoration(label: Text('Email ID')),
+                        decoration: InputDecoration(
+                          label: Text('Email ID'),
+                          icon: Icon(Icons.email),
+                        ),
                       ),
                       TextFormField(
                         validator: (value) {
@@ -44,12 +51,16 @@ class SignupScreen extends StatelessWidget {
                           return null;
                         },
                         keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(label: Text('Contact number')),
+                        decoration: InputDecoration(
+                            label: Text('Contact number'),
+                            icon: Icon(Icons.contact_phone)),
                       ),
                       TextFormField(
                         obscureText: true,
-                        decoration: InputDecoration(label: Text('Password')),
+                        decoration: InputDecoration(
+                          label: Text('Password'),
+                          icon: Icon(Icons.password),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
