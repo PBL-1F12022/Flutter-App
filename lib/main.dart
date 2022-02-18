@@ -26,6 +26,12 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
           ),
         ),
+        buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+              accentColor: Colors.amber,
+              backgroundColor: Colors.purple,
+              primarySwatch: Colors.purple),
+        ),
       ),
       // home: SignupScreen(),
       // home: ProjectEnterScreen(),
