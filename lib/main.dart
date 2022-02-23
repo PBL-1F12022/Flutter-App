@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/Screens/project_enter_screen.dart';
 import 'package:pbl2022_app/Screens/signup_screen.dart';
@@ -12,6 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,9 +35,10 @@ class MyApp extends StatelessWidget {
       ),
       // home: SignupScreen(),
       // home: ProjectEnterScreen(),
-      home: HomeScreenInvestor(),
+      home: SignupScreen(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
+        HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
       },
     );
   }
