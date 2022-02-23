@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 
@@ -26,8 +26,19 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
           ),
         ),
+        buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+              accentColor: Colors.amber,
+              backgroundColor: Colors.purple,
+              primarySwatch: Colors.purple),
+        ),
       ),
+      // home: SignupScreen(),
+      // home: ProjectEnterScreen(),
       home: HomeScreenInvestor(),
+      routes: {
+        ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
+      },
     );
   }
 }

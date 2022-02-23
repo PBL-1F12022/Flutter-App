@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class EnterProfileCard extends StatelessWidget {
@@ -22,22 +23,35 @@ class EnterProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    // return Container(
+    //   child: Row(
+    //     children: [
+    //       SizedBox(
+    //           child: Column(
+    //         children: [
+    //           projectText(theme),
+    //         ],
+    //       )),
+    //       progressIndicator(context),
+    //     ],
+    //   ),
+    // );
     return Container(
       margin: const EdgeInsets.all(0),
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
       width: double.infinity,
-      height: (mediaQuery.size.height) * (25 / 100),
+      height: SizeConfig.getProportionateScreenHeight(300),
       child: Card(
-        elevation: 20,
+        elevation: 10,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: (mediaQuery.size.width) * (50 / 100),
+              width: (mediaQuery.size.width) * (45 / 100),
               child: Column(
                 children: [
                   projectText(theme),
-                  SizedBox(height: 25),
+                  SizedBox(height: SizeConfig.getProportionateScreenHeight(10)),
                   descriptionText(theme),
                   askingPriceText(theme),
                   equityText(theme),
@@ -67,7 +81,7 @@ class EnterProfileCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Text(
-          '~Owner',
+          '~' + owner,
           textAlign: TextAlign.right,
           style: theme.textTheme.headline3,
         ),
@@ -79,10 +93,10 @@ class EnterProfileCard extends StatelessWidget {
     return CircularPercentIndicator(
       radius: 90,
       center: Text(
-        '$equity%',
+        (equity * 100).toStringAsFixed(2) + '%',
         maxLines: 1,
       ),
-      percent: equity / 100,
+      percent: equity,
       fillColor: Theme.of(context).colorScheme.onSecondary,
       lineWidth: 45,
     );
@@ -93,7 +107,7 @@ class EnterProfileCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Text(
-          'Total: $equity%',
+          'Equity: ' + (equity * 100).toStringAsFixed(2) + '%',
           style: theme.textTheme.headline3,
           textAlign: TextAlign.left,
         ),
