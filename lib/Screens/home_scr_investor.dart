@@ -3,16 +3,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:pbl2022_app/constants/size_constants.dart';
-import 'package:pbl2022_app/constants/urls.dart';
+import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 import 'package:pbl2022_app/Widgets/drawer.dart';
+import 'package:pbl2022_app/constants/size_constants.dart';
+import 'package:pbl2022_app/constants/urls.dart';
 import 'package:pbl2022_app/models/project_pitch.dart';
 
 class HomeScreenInvestor extends StatefulWidget {
+  static const routeName = '/home-screen/investor';
+
   @override
   State<HomeScreenInvestor> createState() => _HomeScreenInvestorState();
 }
@@ -20,6 +21,7 @@ class HomeScreenInvestor extends StatefulWidget {
 class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
   bool _load = true;
   List<ProjectIdea> projects = [];
+
   Future getProjectsList() async {
     projects.clear();
     try {
