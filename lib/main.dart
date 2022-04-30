@@ -19,23 +19,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
-          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-          headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 19),
+          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
+          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+          headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
           bodyText1: TextStyle(
             fontSize: 20,
           ),
         ),
         buttonTheme: ButtonThemeData(
           colorScheme: ColorScheme.fromSwatch(
-              accentColor: Colors.amber,
-              backgroundColor: Colors.purple,
-              primarySwatch: Colors.purple),
+            accentColor: Colors.amber,
+            backgroundColor: Colors.purple,
+            primarySwatch: Colors.purple,
+          ),
         ),
       ),
-      // home: SignupScreen(),
       // home: ProjectEnterScreen(),
       home: SignupScreen(),
+      // home: HomeScreenInvestor(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),

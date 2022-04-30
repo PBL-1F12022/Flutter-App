@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'dart:convert';
 
@@ -18,6 +18,10 @@ class SignupScreen extends StatefulWidget {
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
+enum userType { Investor, Entrepreneur }
+String dropDownValue = 'Investor';
+String tokenString = "";
+
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
 
@@ -30,8 +34,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final storage = const FlutterSecureStorage();
 
+  Future isUserLoggedIn() async {
+    tokenString = (await storage.read(key: 'token'))!;
+    final response = await http.get(Uri.parse(signUpInvestorUrl + tokenString));
+    // print(response.statusCode);
+  }
+
   Future signUpInvestor(BuildContext context) async {
     try {
+      final resp = await isUserLoggedIn();
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -46,18 +57,14 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
       if (response.statusCode == 201) {
-        print(response.body);
+        // print(response.body);
         var result = jsonDecode(response.body);
-        // await storage.write(key: 'token', value: result['token']);
-        // await storage.write(key: 'name', value: _nameController.text.trim());
-        // await storage.write(key: 'email', value: _emailController.text.trim());
-        // await storage.write(key: 'id', value: result['user']['_id']);
-
+        await storage.write(key: 'token', value: result['token']);
         Fluttertoast.showToast(
           msg: 'sign-up successful',
           backgroundColor: Colors.red.shade600,
         );
-        print('SignUp');
+        // print('SignUp');
         setState(() {
           _load = false;
         });
@@ -83,11 +90,64 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  Future signUpEntrepreneur(BuildContext context) async {
+    try {
+      final resp = await isUserLoggedIn();
+      Map data = {
+        "name": _nameController.text.trim(),
+        "email": _emailController.text.trim(),
+        "password": _passwordController.text.trim(),
+        "phone": _phoneController.text.trim()
+      };
+
+      final response = await http.post(
+        Uri.parse(signUpEntrepreneurUrl),
+        body: jsonEncode(data),
+        headers: {"Content-Type": "application/json"},
+      );
+      // print(response.body);
+      // print(response.statusCode.toString());
+
+      if (response.statusCode == 201) {
+        var result = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: 'sign-up successful',
+          backgroundColor: Colors.red.shade600,
+        );
+        setState(() {
+          _load = false;
+        });
+        print('Entrepreneur added');
+        // storage.write(key: "LoginKey", value: );
+        Navigator.of(context).pushNamed(HomeScreenInvestor.routeName);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Something went wrong! Try again later',
+          backgroundColor: Colors.red.shade600,
+        );
+        setState(() {
+          _load = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _load = false;
+      });
+      Fluttertoast.showToast(
+        msg: 'Please try again later',
+        backgroundColor: Colors.red.shade600,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
+    final items = ['Investor', 'Entrepreneur'];
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    late final width = mediaQuery.size.width;
+    late final height = mediaQuery.size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -107,17 +167,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: theme.textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
-              // Image.asset(
-              //   'assets/images/signup_image.jpg',
-              //   height: 150,
-              //   fit: BoxFit.cover,
-              // ),
-              // Image.network(
-              //   'https://www.clipartmax.com/png/middle/437-4379862_signup-icon-signup-sign-up-icon.png',
-              //   fit: BoxFit.cover,
-              // ),
               Container(
-                height: SizeConfig.getProportionateScreenHeight(370),
+                height: SizeConfig.getProportionateScreenHeight(400),
                 padding: EdgeInsets.all(20),
                 margin: EdgeInsets.only(
                   bottom: SizeConfig.getProportionateScreenHeight(150),
@@ -135,20 +186,62 @@ class _SignupScreenState extends State<SignupScreen> {
                     key: _formKey,
                     child: Container(
                       padding: EdgeInsets.all(15),
-                      child: Column(
-                        children: <Widget>[
-                          nameTextField(),
-                          emailTextField(),
-                          phNumberTextField(),
-                          passwordField(),
-                          _load
-                              ? signupButtonLoad()
-                              : signupButton(theme, context),
-                          // TextButton(
-                          //   onPressed: () {},
-                          //   child: Text('Already a user?'),
-                          // ),
-                        ],
+                      child: Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            nameTextField(),
+                            emailTextField(),
+                            phNumberTextField(),
+                            passwordField(),
+                            _load
+                                ? signupButtonLoad()
+                                : dropDownValue == userType.Entrepreneur.name
+                                    ? signupButton(
+                                        theme,
+                                        context,
+                                        userType.Entrepreneur.index,
+                                      )
+                                    : signupButton(
+                                        theme,
+                                        context,
+                                        userType.Investor.index,
+                                      ),
+                            // _load
+                            //     ? signupButtonLoad()
+                            //     : dropDownValue == userType.investor.name
+                            //         ? signupButton(
+                            //             theme,
+                            //             context,
+                            //             // userType.investor,
+                            //             1,
+                            //           )
+                            //         : signupButton(
+                            //             theme,
+                            //             context,
+                            //             // userType.entrepreneur,
+                            //             0,
+                            //           ),
+                            // TextButton(
+                            //   onPressed: () {},
+                            //   child: Text('Already a user?'),
+                            // ),
+                            DropdownButton(
+                              value: dropDownValue,
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  child: Text(items),
+                                  value: items,
+                                );
+                              }).toList(),
+                              icon: Icon(Icons.arrow_drop_down_circle),
+                              onChanged: (String? newVal) {
+                                setState(() {
+                                  dropDownValue = newVal!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -207,7 +300,11 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Container signupButton(ThemeData theme, BuildContext context) {
+  Container signupButton(
+    ThemeData theme,
+    BuildContext context,
+    var userTypeName,
+  ) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
@@ -219,7 +316,9 @@ class _SignupScreenState extends State<SignupScreen> {
         onPressed: () {
           _load = true;
           if (_formKey.currentState!.validate()) {
-            signUpInvestor(context);
+            (userTypeName == 0)
+                ? signUpInvestor(context)
+                : signUpEntrepreneur(context);
           } else {
             setState(() {
               _load = false;
