@@ -38,17 +38,33 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _load = false;
   bool _isAutoLogin = false;
+  bool _isLogin = false;
 
   final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
-    tokenString = (await storage.read(key: 'token'))!;
-    final response = await http.get(Uri.parse(signUpInvestorUrl + tokenString));
-    if (response.statusCode == 200) {
-      setState(() {
-        _isAutoLogin = true;
-      });
-    }
-    print(response.statusCode);
+    try {
+      final index = await storage.read(key: 'index');
+      final email = await storage.read(key: 'email');
+      final password = await storage.read(key: 'password');
+      final tokenString = await storage.read(key: 'token');
+      final url = (index == '0')
+          ? Uri.parse(loginInvestorUrl)
+          : Uri.parse(loginEntrepreneurUrl);
+      final response = await http.post(url,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode({
+            'email': email,
+            'password': password,
+          }));
+      if (response.statusCode == 200) {
+        setState(() {
+          _isAutoLogin = true;
+        });
+      }
+      print(response.statusCode);
+    } catch (e) {}
   }
 
   Future loginUser(int index) async {
@@ -71,6 +87,9 @@ class _SignupScreenState extends State<SignupScreen> {
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
+        // while (Navigator.of(context).canPop()) {
+        //   Navigator.of(context).pop();
+        // }
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {}
@@ -90,17 +109,21 @@ class _SignupScreenState extends State<SignupScreen> {
         "password": _passwordController.text.trim(),
         "phone": _phoneController.text.trim()
       };
-
       final response = await http.post(
         Uri.parse(signUpInvestorUrl),
         body: jsonEncode(data),
         headers: {"Content-Type": "application/json"},
       );
-
+      print(response.statusCode);
       if (response.statusCode == 201) {
         // print(response.body);
         var result = jsonDecode(response.body);
+        await storage.write(
+            key: 'password', value: _passwordController.text.trim());
+        await storage.write(key: 'index', value: '0');
+        await storage.write(key: 'email', value: _emailController.text.trim());
         await storage.write(key: 'token', value: result['token']);
+
         Fluttertoast.showToast(
           msg: 'sign-up successful',
           backgroundColor: Colors.red.shade600,
@@ -109,8 +132,11 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _load = false;
         });
-
-        Navigator.of(context).pushNamed(HomeScreenInvestor.routeName);
+        while (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop();
+        }
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',
@@ -158,8 +184,13 @@ class _SignupScreenState extends State<SignupScreen> {
           _load = false;
         });
         print('Entrepreneur added');
-        // storage.write(key: "LoginKey", value: );
-        Navigator.of(context).pushNamed(HomeScreenInvestor.routeName);
+        final data = jsonDecode(response.body);
+        await storage.write(key: 'index', value: '2');
+        await storage.write(key: 'email', value: data['keyValue']['email']);
+        await storage.write(
+            key: 'password', value: _passwordController.text.trim());
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',
@@ -182,135 +213,90 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isLogin = true;
     SizeConfig.init(context);
     final items = ['Investor', 'Entrepreneur'];
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
     late final width = mediaQuery.size.width;
     late final height = mediaQuery.size.height;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          height:
-              SizeConfig.getProportionateScreenHeight(mediaQuery.size.height),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'WELCOME!',
-                style: theme.textTheme.headline1,
-              ),
-              Text(
-                'Please sign up to continue...',
-                style: theme.textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-              Container(
-                height: SizeConfig.getProportionateScreenHeight(400),
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(
-                  bottom: SizeConfig.getProportionateScreenHeight(150),
-                ),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      // bottomRight: Radius.circular(40),
+    return _isAutoLogin
+        ? HomeScreenInvestor()
+        : Scaffold(
+            body: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                height: SizeConfig.getProportionateScreenHeight(
+                    mediaQuery.size.height),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'WELCOME!',
+                      style: theme.textTheme.headline1,
                     ),
-                  ),
-                  child: _isLogin
-                      ? Form(
-                          key: _formKey,
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            child: Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  emailTextField(),
-                                  passwordField(),
-                                  _load
-                                      ? signupButtonLoad()
-                                      : dropDownValue ==
-                                              userType.Entrepreneur.name
-                                          ? loginButton(
-                                              theme,
-                                              context,
-                                              userType.Entrepreneur.index,
-                                            )
-                                          : loginButton(
-                                              theme,
-                                              context,
-                                              userType.Investor.index,
-                                            ),
-                                  DropdownButton(
-                                    value: dropDownValue,
-                                    items: items.map((String items) {
-                                      return DropdownMenuItem(
-                                        child: Text(items),
-                                        value: items,
-                                      );
-                                    }).toList(),
-                                    icon: Icon(Icons.arrow_drop_down_circle),
-                                    onChanged: (String? newVal) {
-                                      setState(() {
-                                        dropDownValue = newVal!;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
+                    Text(
+                      'Please sign up to continue...',
+                      style: theme.textTheme.headline2,
+                      textAlign: TextAlign.center,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                      child: !_isLogin
+                          ? Text('Already a user?')
+                          : Text('New user?'),
+                    ),
+                    Container(
+                      height: SizeConfig.getProportionateScreenHeight(500),
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.only(
+                        bottom: SizeConfig.getProportionateScreenHeight(150),
+                      ),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(40),
+                            bottomLeft: Radius.circular(40),
+                            // bottomRight: Radius.circular(40),
                           ),
-                        )
-                      : Form(
+                        ),
+                        child: Form(
                           key: _formKey,
                           child: Container(
                             padding: EdgeInsets.all(15),
                             child: Expanded(
                               child: Column(
                                 children: <Widget>[
-                                  nameTextField(),
+                                  if (!_isLogin) nameTextField(),
                                   emailTextField(),
-                                  phNumberTextField(),
+                                  if (!_isLogin) phNumberTextField(),
                                   passwordField(),
                                   _load
                                       ? signupButtonLoad()
-                                      : dropDownValue ==
-                                              userType.Entrepreneur.name
-                                          ? signupButton(
-                                              theme,
-                                              context,
-                                              userType.Entrepreneur.index,
-                                            )
-                                          : signupButton(
-                                              theme,
-                                              context,
-                                              userType.Investor.index,
-                                            ),
-                                  // _load
-                                  //     ? signupButtonLoad()
-                                  //     : dropDownValue == userType.investor.name
-                                  //         ? signupButton(
-                                  //             theme,
-                                  //             context,
-                                  //             // userType.investor,
-                                  //             1,
-                                  //           )
-                                  //         : signupButton(
-                                  //             theme,
-                                  //             context,
-                                  //             // userType.entrepreneur,
-                                  //             0,
-                                  //           ),
-                                  // TextButton(
-                                  //   onPressed: () {},
-                                  //   child: Text('Already a user?'),
-                                  // ),
+                                      : _isLogin
+                                          ? dropDownValue ==
+                                                  userType.Investor.name
+                                              ? loginButton(
+                                                  theme, context, 0, _isLogin)
+                                              : loginButton(
+                                                  theme, context, 1, _isLogin)
+                                          : dropDownValue ==
+                                                  userType.Entrepreneur.name
+                                              ? signupButton(
+                                                  theme,
+                                                  context,
+                                                  userType.Entrepreneur.index,
+                                                )
+                                              : signupButton(
+                                                  theme,
+                                                  context,
+                                                  userType.Investor.index,
+                                                ),
                                   DropdownButton(
                                     value: dropDownValue,
                                     items: items.map((String items) {
@@ -331,8 +317,64 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
+                      ),
+                    )
+                  ],
                 ),
               ),
+            ),
+          );
+  }
+
+  Form loginForm(ThemeData theme, BuildContext context, List<String> items,
+      bool _isLogin) {
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.all(15),
+        child: Expanded(
+          child: Column(
+            children: <Widget>[
+              emailTextField(),
+              passwordField(),
+              _load
+                  ? signupButtonLoad()
+                  : dropDownValue == userType.Entrepreneur.name
+                      ? loginButton(
+                          theme,
+                          context,
+                          userType.Entrepreneur.index,
+                          _isLogin,
+                        )
+                      : loginButton(
+                          theme,
+                          context,
+                          userType.Investor.index,
+                          _isLogin,
+                        ),
+              DropdownButton(
+                value: dropDownValue,
+                items: items.map((String items) {
+                  return DropdownMenuItem(
+                    child: Text(items),
+                    value: items,
+                  );
+                }).toList(),
+                icon: Icon(Icons.arrow_drop_down_circle),
+                onChanged: (String? newVal) {
+                  setState(() {
+                    dropDownValue = newVal!;
+                  });
+                },
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _isLogin = false;
+                  });
+                },
+                child: Text('New user?'),
+              )
             ],
           ),
         ),
@@ -340,7 +382,64 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Container loginButton(ThemeData theme, BuildContext context, int index) {
+  Form signupForm(ThemeData theme, BuildContext context, List<String> items,
+      bool _isLogin) {
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.all(15),
+        child: Expanded(
+          child: Column(
+            children: <Widget>[
+              nameTextField(),
+              emailTextField(),
+              phNumberTextField(),
+              passwordField(),
+              _load
+                  ? signupButtonLoad()
+                  : dropDownValue == userType.Entrepreneur.name
+                      ? signupButton(
+                          theme,
+                          context,
+                          userType.Entrepreneur.index,
+                        )
+                      : signupButton(
+                          theme,
+                          context,
+                          userType.Investor.index,
+                        ),
+              DropdownButton(
+                value: dropDownValue,
+                items: items.map((String items) {
+                  return DropdownMenuItem(
+                    child: Text(items),
+                    value: items,
+                  );
+                }).toList(),
+                icon: Icon(Icons.arrow_drop_down_circle),
+                onChanged: (String? newVal) {
+                  setState(() {
+                    dropDownValue = newVal!;
+                  });
+                },
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _isLogin = true;
+                  });
+                },
+                child: Text('Already a user?'),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container loginButton(
+      ThemeData theme, BuildContext context, int index, bool isLogin) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
@@ -363,7 +462,7 @@ class _SignupScreenState extends State<SignupScreen> {
           }
           _formKey.currentState!.save();
         },
-        child: Text('Sign Up'),
+        child: !isLogin ? Text('Sign Up') : Text('Log In'),
       ),
     );
   }
@@ -440,7 +539,7 @@ class _SignupScreenState extends State<SignupScreen> {
           }
           _formKey.currentState!.save();
         },
-        child: Text('Sign Up'),
+        child: !_isLogin ? Text('Sign Up') : Text('Log In'),
       ),
     );
   }
