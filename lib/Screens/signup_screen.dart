@@ -87,9 +87,9 @@ class _SignupScreenState extends State<SignupScreen> {
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        while (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-        }
+        // while (Navigator.of(context).canPop()) {
+        //   Navigator.of(context).pop();
+        // }
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {}
@@ -278,18 +278,25 @@ class _SignupScreenState extends State<SignupScreen> {
                                   passwordField(),
                                   _load
                                       ? signupButtonLoad()
-                                      : dropDownValue ==
-                                              userType.Entrepreneur.name
-                                          ? signupButton(
-                                              theme,
-                                              context,
-                                              userType.Entrepreneur.index,
-                                            )
-                                          : signupButton(
-                                              theme,
-                                              context,
-                                              userType.Investor.index,
-                                            ),
+                                      : _isLogin
+                                          ? dropDownValue ==
+                                                  userType.Investor.name
+                                              ? loginButton(
+                                                  theme, context, 0, _isLogin)
+                                              : loginButton(
+                                                  theme, context, 1, _isLogin)
+                                          : dropDownValue ==
+                                                  userType.Entrepreneur.name
+                                              ? signupButton(
+                                                  theme,
+                                                  context,
+                                                  userType.Entrepreneur.index,
+                                                )
+                                              : signupButton(
+                                                  theme,
+                                                  context,
+                                                  userType.Investor.index,
+                                                ),
                                   DropdownButton(
                                     value: dropDownValue,
                                     items: items.map((String items) {
