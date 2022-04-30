@@ -39,8 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _load = false;
   bool _isAutoLogin = false;
 
-  final storage = const FlutterSecureStorage();
-
+  final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
     tokenString = (await storage.read(key: 'token'))!;
     final response = await http.get(Uri.parse(signUpInvestorUrl + tokenString));
@@ -54,6 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future loginUser(int index) async {
     try {
+      final token = storage.read(key: 'token');
       Map data = {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
@@ -61,7 +61,13 @@ class _SignupScreenState extends State<SignupScreen> {
       final url = (index == 0)
           ? Uri.parse(loginInvestorUrl)
           : Uri.parse(loginEntrepreneurUrl);
-      final response = await http.post(url, body: data);
+      final response = await http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
