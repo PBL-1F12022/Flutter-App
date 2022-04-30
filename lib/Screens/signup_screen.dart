@@ -46,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
     try {
-      final tokenString = await storage.read(key: 'token');
+      String? tokenString = await storage.read(key: 'token');
 
       if (tokenString != null) {
         setState(() {
@@ -64,7 +64,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future loginUser(int index) async {
     try {
-      final token = storage.read(key: 'token');
       Map data = {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
@@ -82,9 +81,8 @@ class _SignupScreenState extends State<SignupScreen> {
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        // while (Navigator.of(context).canPop()) {
-        //   Navigator.of(context).pop();
-        // }
+        var result = jsonDecode(response.body);
+        await storage.write(key: 'token', value: result['token']);
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {}
