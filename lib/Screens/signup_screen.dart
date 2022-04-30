@@ -46,28 +46,19 @@ class _SignupScreenState extends State<SignupScreen> {
   final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
     try {
-      final index = await storage.read(key: 'index');
-      final email = await storage.read(key: 'email');
-      final password = await storage.read(key: 'password');
       final tokenString = await storage.read(key: 'token');
-      final url = (index == '0')
-          ? Uri.parse(loginInvestorUrl)
-          : Uri.parse(loginEntrepreneurUrl);
-      final response = await http.post(url,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: jsonEncode({
-            'email': email,
-            'password': password,
-          }));
-      if (response.statusCode == 200) {
+
+      if (tokenString != null) {
         setState(() {
           _isAutoLogin = true;
           _isProcessing = false;
         });
+      } else {
+        setState(() {
+          _isAutoLogin = false;
+          _isProcessing = false;
+        });
       }
-      print(response.statusCode);
     } catch (e) {}
   }
 
