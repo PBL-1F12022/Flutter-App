@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, constant_identifier_names
 
 import 'dart:convert';
 
@@ -23,6 +23,12 @@ String dropDownValue = 'Investor';
 String tokenString = "";
 
 class _SignupScreenState extends State<SignupScreen> {
+  @override
+  void initState() {
+    isUserLoggedIn();
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -31,18 +37,47 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _phoneController = TextEditingController();
 
   bool _load = false;
+  bool _isAutoLogin = false;
 
   final storage = const FlutterSecureStorage();
 
   Future isUserLoggedIn() async {
     tokenString = (await storage.read(key: 'token'))!;
     final response = await http.get(Uri.parse(signUpInvestorUrl + tokenString));
-    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      setState(() {
+        _isAutoLogin = true;
+      });
+    }
+    print(response.statusCode);
+  }
+
+  Future loginUser(int index) async {
+    try {
+      Map data = {
+        "email": _emailController.text.trim(),
+        "password": _passwordController.text.trim(),
+      };
+      final url = (index == 0)
+          ? Uri.parse(loginInvestorUrl)
+          : Uri.parse(loginEntrepreneurUrl);
+      final response = await http.post(url, body: data);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Something went wrong! Try again later',
+        backgroundColor: Colors.red.shade600,
+      );
+    }
   }
 
   Future signUpInvestor(BuildContext context) async {
     try {
-      final resp = await isUserLoggedIn();
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -92,7 +127,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpEntrepreneur(BuildContext context) async {
     try {
-      final resp = await isUserLoggedIn();
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -142,6 +176,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isLogin = true;
     SizeConfig.init(context);
     final items = ['Investor', 'Entrepreneur'];
     final mediaQuery = MediaQuery.of(context);
@@ -182,74 +217,147 @@ class _SignupScreenState extends State<SignupScreen> {
                       // bottomRight: Radius.circular(40),
                     ),
                   ),
-                  child: Form(
-                    key: _formKey,
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      child: Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            nameTextField(),
-                            emailTextField(),
-                            phNumberTextField(),
-                            passwordField(),
-                            _load
-                                ? signupButtonLoad()
-                                : dropDownValue == userType.Entrepreneur.name
-                                    ? signupButton(
-                                        theme,
-                                        context,
-                                        userType.Entrepreneur.index,
-                                      )
-                                    : signupButton(
-                                        theme,
-                                        context,
-                                        userType.Investor.index,
-                                      ),
-                            // _load
-                            //     ? signupButtonLoad()
-                            //     : dropDownValue == userType.investor.name
-                            //         ? signupButton(
-                            //             theme,
-                            //             context,
-                            //             // userType.investor,
-                            //             1,
-                            //           )
-                            //         : signupButton(
-                            //             theme,
-                            //             context,
-                            //             // userType.entrepreneur,
-                            //             0,
-                            //           ),
-                            // TextButton(
-                            //   onPressed: () {},
-                            //   child: Text('Already a user?'),
-                            // ),
-                            DropdownButton(
-                              value: dropDownValue,
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  child: Text(items),
-                                  value: items,
-                                );
-                              }).toList(),
-                              icon: Icon(Icons.arrow_drop_down_circle),
-                              onChanged: (String? newVal) {
-                                setState(() {
-                                  dropDownValue = newVal!;
-                                });
-                              },
+                  child: _isLogin
+                      ? Form(
+                          key: _formKey,
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            child: Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  emailTextField(),
+                                  passwordField(),
+                                  _load
+                                      ? signupButtonLoad()
+                                      : dropDownValue ==
+                                              userType.Entrepreneur.name
+                                          ? loginButton(
+                                              theme,
+                                              context,
+                                              userType.Entrepreneur.index,
+                                            )
+                                          : loginButton(
+                                              theme,
+                                              context,
+                                              userType.Investor.index,
+                                            ),
+                                  DropdownButton(
+                                    value: dropDownValue,
+                                    items: items.map((String items) {
+                                      return DropdownMenuItem(
+                                        child: Text(items),
+                                        value: items,
+                                      );
+                                    }).toList(),
+                                    icon: Icon(Icons.arrow_drop_down_circle),
+                                    onChanged: (String? newVal) {
+                                      setState(() {
+                                        dropDownValue = newVal!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
+                        )
+                      : Form(
+                          key: _formKey,
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            child: Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  nameTextField(),
+                                  emailTextField(),
+                                  phNumberTextField(),
+                                  passwordField(),
+                                  _load
+                                      ? signupButtonLoad()
+                                      : dropDownValue ==
+                                              userType.Entrepreneur.name
+                                          ? signupButton(
+                                              theme,
+                                              context,
+                                              userType.Entrepreneur.index,
+                                            )
+                                          : signupButton(
+                                              theme,
+                                              context,
+                                              userType.Investor.index,
+                                            ),
+                                  // _load
+                                  //     ? signupButtonLoad()
+                                  //     : dropDownValue == userType.investor.name
+                                  //         ? signupButton(
+                                  //             theme,
+                                  //             context,
+                                  //             // userType.investor,
+                                  //             1,
+                                  //           )
+                                  //         : signupButton(
+                                  //             theme,
+                                  //             context,
+                                  //             // userType.entrepreneur,
+                                  //             0,
+                                  //           ),
+                                  // TextButton(
+                                  //   onPressed: () {},
+                                  //   child: Text('Already a user?'),
+                                  // ),
+                                  DropdownButton(
+                                    value: dropDownValue,
+                                    items: items.map((String items) {
+                                      return DropdownMenuItem(
+                                        child: Text(items),
+                                        value: items,
+                                      );
+                                    }).toList(),
+                                    icon: Icon(Icons.arrow_drop_down_circle),
+                                    onChanged: (String? newVal) {
+                                      setState(() {
+                                        dropDownValue = newVal!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Container loginButton(ThemeData theme, BuildContext context, int index) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: MaterialButton(
+        padding: EdgeInsets.all(10),
+        color: theme.buttonTheme.colorScheme!.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        onPressed: () {
+          _load = true;
+          if (_formKey.currentState!.validate()) {
+            loginUser(index);
+            // (index == 0)
+            // ? loginUser(index)
+            // : signUpEntrepreneur(context);
+          } else {
+            setState(() {
+              _load = false;
+            });
+          }
+          _formKey.currentState!.save();
+        },
+        child: Text('Sign Up'),
       ),
     );
   }
