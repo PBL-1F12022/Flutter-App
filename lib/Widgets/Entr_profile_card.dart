@@ -19,57 +19,74 @@ class EnterProfileCard extends StatelessWidget {
     this.owner = "",
     this.projName = "",
   });
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
-    // return Container(
-    //   child: Row(
-    //     children: [
-    //       SizedBox(
-    //           child: Column(
-    //         children: [
-    //           projectText(theme),
-    //         ],
-    //       )),
-    //       progressIndicator(context),
-    //     ],
-    //   ),
-    // );
-    return Container(
-      margin: const EdgeInsets.all(0),
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
-      width: double.infinity,
-      height: SizeConfig.getProportionateScreenHeight(300),
-      child: Card(
-        elevation: 10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: (mediaQuery.size.width) * (45 / 100),
-              child: Column(
-                children: [
-                  projectText(theme),
-                  SizedBox(height: SizeConfig.getProportionateScreenHeight(10)),
-                  descriptionText(theme),
-                  askingPriceText(theme),
-                  equityText(theme),
-                ],
+    return Align(
+      alignment: Alignment.center,
+      child: Expanded(
+        child: AspectRatio(
+          aspectRatio: 3 / 2.7,
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              vertical: mediaQuery.size.height * (1 / 100),
+              horizontal: mediaQuery.size.width * (1 / 100),
+            ),
+            // decoration: BoxDecoration(border: Border.all()),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
+              elevation: 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    projectText(theme, mediaQuery),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: mediaQuery.size.width * (40 / 100),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              descriptionText(theme),
+                              SizedBox(
+                                  height: mediaQuery.size.height * (2 / 100)),
+                              askingPriceText(theme),
+                              equityText(theme),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: mediaQuery.size.width * (2 / 100)),
+                        SizedBox(
+                          width: mediaQuery.size.width * (40 / 100),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                  height: mediaQuery.size.height * (1 / 100)),
+                              progressIndicator(context, mediaQuery),
+                              SizedBox(
+                                  height: mediaQuery.size.height * (1 / 100)),
+                              ownerText(theme),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  child: progressIndicator(context),
-                  padding: EdgeInsets.all(13),
-                ),
-                ownerText(theme),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -79,7 +96,7 @@ class EnterProfileCard extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(0),
         child: Text(
           '~' + owner,
           textAlign: TextAlign.right,
@@ -89,9 +106,10 @@ class EnterProfileCard extends StatelessWidget {
     );
   }
 
-  CircularPercentIndicator progressIndicator(BuildContext context) {
+  CircularPercentIndicator progressIndicator(
+      BuildContext context, MediaQueryData mediaQuery) {
     return CircularPercentIndicator(
-      radius: 90,
+      radius: mediaQuery.size.width * (20 / 100),
       center: Text(
         (equity * 100).toStringAsFixed(2) + '%',
         maxLines: 1,
@@ -105,27 +123,24 @@ class EnterProfileCard extends StatelessWidget {
   Align equityText(ThemeData theme) {
     return Align(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(0),
         child: Text(
           'Equity: ' + (equity * 100).toStringAsFixed(2) + '%',
           style: theme.textTheme.headline3,
           textAlign: TextAlign.left,
         ),
       ),
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.center,
     );
   }
 
   Align askingPriceText(ThemeData theme) {
     return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Text(
-          'Ask: $askingPrice',
-          style: theme.textTheme.headline3,
-          textAlign: TextAlign.left,
-        ),
+      alignment: Alignment.center,
+      child: Text(
+        'Ask: $askingPrice',
+        style: theme.textTheme.headline3,
+        textAlign: TextAlign.left,
       ),
     );
   }
@@ -133,27 +148,27 @@ class EnterProfileCard extends StatelessWidget {
   Align descriptionText(ThemeData theme) {
     return Align(
       alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Text(
-          '"$description"',
-          style: theme.textTheme.headline2,
-          maxLines: 3,
-          softWrap: true,
-          overflow: TextOverflow.clip,
-          textAlign: TextAlign.center,
-        ),
+      child: Text(
+        '"$description"',
+        style: theme.textTheme.headline2,
+        maxLines: 3,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
       ),
     );
   }
 
-  Align projectText(ThemeData theme) {
+  Align projectText(ThemeData theme, MediaQueryData mediaQuery) {
     return Align(
       alignment: Alignment(-1.0, -1.0),
       child: Padding(
-        padding: EdgeInsets.all(5),
+        padding:
+            EdgeInsets.symmetric(vertical: mediaQuery.size.height * (1 / 100)),
         child: Text(
           projName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: theme.textTheme.headline1,
         ),
       ),
