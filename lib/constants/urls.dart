@@ -5,6 +5,7 @@ const createProjectUrl = baseUrl + "/projects";
 
 const signUpInvestorUrl = baseUrl + "/investor";
 const loginInvestorUrl = baseUrl + '/investor/login';
+const getInvestorInfo = baseUrl + '/investor/me';
 
 const signUpEntrepreneurUrl = baseUrl + "/entrepreneur";
 const loginEntrepreneurUrl = baseUrl + '/entrepreneur/login';

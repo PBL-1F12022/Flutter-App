@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/project_enter_screen.dart';
 
 class HomeScreenDrawer extends StatelessWidget {
@@ -17,6 +18,12 @@ class HomeScreenDrawer extends StatelessWidget {
               Navigator.of(context).pushNamed(ProjectEnterScreen.routeName);
             },
             child: Text('Add project'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(MyInvestmentsScreen.routeName);
+            },
+            child: Text('My Investments'),
           )
         ],
       ),

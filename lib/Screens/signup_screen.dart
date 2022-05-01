@@ -2,15 +2,13 @@
 
 import 'dart:convert';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
-
 import '../constants/urls.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -78,8 +76,8 @@ class _SignupScreenState extends State<SignupScreen> {
           "Content-Type": "application/json",
         },
       );
-      print(response.body);
-      print(response.statusCode);
+      // print(response.body);
+      // print(response.statusCode);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         await storage.write(key: 'token', value: result['token']);
@@ -107,14 +105,12 @@ class _SignupScreenState extends State<SignupScreen> {
         body: jsonEncode(data),
         headers: {"Content-Type": "application/json"},
       );
-      print(response.statusCode);
+      // print(response.statusCode);
       if (response.statusCode == 201) {
         // print(response.body);
         var result = jsonDecode(response.body);
         await storage.write(
             key: 'password', value: _passwordController.text.trim());
-        await storage.write(key: 'index', value: '0');
-        await storage.write(key: 'email', value: _emailController.text.trim());
         await storage.write(key: 'token', value: result['token']);
 
         Fluttertoast.showToast(
@@ -176,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _load = false;
         });
-        print('Entrepreneur added');
+        // print('Entrepreneur added');
         final data = jsonDecode(response.body);
         await storage.write(key: 'index', value: '2');
         await storage.write(key: 'email', value: data['keyValue']['email']);
@@ -407,8 +403,8 @@ class _SignupScreenState extends State<SignupScreen> {
             if (value!.length != 10) {
               return 'Check again!';
             }
-            return null;
           }
+          return null;
         },
         style: TextStyle(color: Colors.white.withOpacity(.9)),
         obscureText: isPassword,
