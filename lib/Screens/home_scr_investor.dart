@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
@@ -53,6 +54,8 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
   @override
   void initState() {
+    // final storage = FlutterSecureStorage();
+    // storage.deleteAll();
     getProjectsList();
     super.initState();
   }

@@ -1,10 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/constants/size_constants.dart';
+import 'package:pbl2022_app/constants/urls.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class EnterProfileCard extends StatelessWidget {
+class EnterProfileCard extends StatefulWidget {
   late final String id;
   late final String projName;
   late final String description;
@@ -19,6 +21,27 @@ class EnterProfileCard extends StatelessWidget {
     this.owner = "",
     this.projName = "",
   });
+
+  @override
+  State<EnterProfileCard> createState() => _EnterProfileCardState();
+}
+
+class _EnterProfileCardState extends State<EnterProfileCard> {
+  bool _isBookMarked = false;
+
+  Future _toggleBookMark() async {
+    final url = Uri.parse(bookmarkUrl);
+    final response = await http.post(
+      url,
+      body: {
+        'bookmark': widget.id.toString(),
+      },
+    );
+    print(response.body);
+    setState(() {
+      _isBookMarked = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +69,18 @@ class EnterProfileCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     projectText(theme, mediaQuery),
+                    IconButton(
+                      onPressed: () {
+                        _toggleBookMark();
+                      },
+                      icon: _isBookMarked
+                          ? Icon(
+                              Icons.bookmark_add,
+                            )
+                          : Icon(
+                              Icons.bookmark_add_outlined,
+                            ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +133,7 @@ class EnterProfileCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(0),
         child: Text(
-          '~' + owner,
+          '~' + widget.owner,
           textAlign: TextAlign.right,
           style: theme.textTheme.headline3,
         ),
@@ -111,10 +146,10 @@ class EnterProfileCard extends StatelessWidget {
     return CircularPercentIndicator(
       radius: mediaQuery.size.width * (20 / 100),
       center: Text(
-        (equity * 100).toStringAsFixed(2) + '%',
+        (widget.equity * 100).toStringAsFixed(2) + '%',
         maxLines: 1,
       ),
-      percent: equity,
+      percent: widget.equity,
       fillColor: Theme.of(context).colorScheme.onSecondary,
       lineWidth: 45,
     );
@@ -125,7 +160,7 @@ class EnterProfileCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(0),
         child: Text(
-          'Equity: ' + (equity * 100).toStringAsFixed(2) + '%',
+          'Equity: ' + (widget.equity * 100).toStringAsFixed(2) + '%',
           style: theme.textTheme.headline3,
           textAlign: TextAlign.left,
         ),
@@ -138,7 +173,7 @@ class EnterProfileCard extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Text(
-        'Ask: $askingPrice',
+        'Ask: ${widget.askingPrice}',
         style: theme.textTheme.headline3,
         textAlign: TextAlign.left,
       ),
@@ -149,7 +184,7 @@ class EnterProfileCard extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Text(
-        '"$description"',
+        '"${widget.description}"',
         style: theme.textTheme.headline2,
         maxLines: 3,
         softWrap: true,
@@ -166,7 +201,7 @@ class EnterProfileCard extends StatelessWidget {
         padding:
             EdgeInsets.symmetric(vertical: mediaQuery.size.height * (1 / 100)),
         child: Text(
-          projName,
+          widget.projName,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.headline1,
@@ -175,3 +210,4 @@ class EnterProfileCard extends StatelessWidget {
     );
   }
 }
+

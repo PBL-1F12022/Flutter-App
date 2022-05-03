@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, constant_identifier_names
 
 import 'dart:convert';
 
@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
-
 import '../constants/urls.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -23,6 +23,12 @@ String dropDownValue = 'Investor';
 String tokenString = "";
 
 class _SignupScreenState extends State<SignupScreen> {
+  @override
+  void initState() {
+    isUserLoggedIn();
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -31,35 +37,82 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _phoneController = TextEditingController();
 
   bool _load = false;
+  bool _isAutoLogin = false;
+  bool _isLogin = false;
+  bool _isProcessing = true;
 
-  final storage = const FlutterSecureStorage();
-
+  final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
-    tokenString = (await storage.read(key: 'token'))!;
-    final response = await http.get(Uri.parse(signUpInvestorUrl + tokenString));
-    // print(response.statusCode);
+    try {
+      String? tokenString = await storage.read(key: 'token');
+
+      if (tokenString != null) {
+        setState(() {
+          _isAutoLogin = true;
+          _isProcessing = false;
+        });
+      } else {
+        setState(() {
+          _isAutoLogin = false;
+          _isProcessing = false;
+        });
+      }
+    } catch (e) {}
+  }
+
+  Future loginUser(int index) async {
+    try {
+      Map data = {
+        "email": _emailController.text.trim(),
+        "password": _passwordController.text.trim(),
+      };
+      final url = (index == 0)
+          ? Uri.parse(loginInvestorUrl)
+          : Uri.parse(loginEntrepreneurUrl);
+      final response = await http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      // print(response.body);
+      // print(response.statusCode);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        await storage.write(key: 'token', value: result['token']);
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Something went wrong! Try again later',
+        backgroundColor: Colors.red.shade600,
+      );
+    }
   }
 
   Future signUpInvestor(BuildContext context) async {
     try {
-      final resp = await isUserLoggedIn();
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
         "phone": _phoneController.text.trim()
       };
-
       final response = await http.post(
         Uri.parse(signUpInvestorUrl),
         body: jsonEncode(data),
         headers: {"Content-Type": "application/json"},
       );
-
+      // print(response.statusCode);
       if (response.statusCode == 201) {
         // print(response.body);
         var result = jsonDecode(response.body);
+        await storage.write(
+            key: 'password', value: _passwordController.text.trim());
         await storage.write(key: 'token', value: result['token']);
+
         Fluttertoast.showToast(
           msg: 'sign-up successful',
           backgroundColor: Colors.red.shade600,
@@ -68,8 +121,11 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _load = false;
         });
-
-        Navigator.of(context).pushNamed(HomeScreenInvestor.routeName);
+        while (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop();
+        }
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',
@@ -92,7 +148,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpEntrepreneur(BuildContext context) async {
     try {
-      final resp = await isUserLoggedIn();
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -117,9 +172,14 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _load = false;
         });
-        print('Entrepreneur added');
-        // storage.write(key: "LoginKey", value: );
-        Navigator.of(context).pushNamed(HomeScreenInvestor.routeName);
+        // print('Entrepreneur added');
+        final data = jsonDecode(response.body);
+        await storage.write(key: 'index', value: '2');
+        await storage.write(key: 'email', value: data['keyValue']['email']);
+        await storage.write(
+            key: 'password', value: _passwordController.text.trim());
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',
@@ -148,154 +208,260 @@ class _SignupScreenState extends State<SignupScreen> {
     final theme = Theme.of(context);
     late final width = mediaQuery.size.width;
     late final height = mediaQuery.size.height;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          height:
-              SizeConfig.getProportionateScreenHeight(mediaQuery.size.height),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'WELCOME!',
-                style: theme.textTheme.headline1,
-              ),
-              Text(
-                'Please sign up to continue...',
-                style: theme.textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-              Container(
-                height: SizeConfig.getProportionateScreenHeight(400),
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(
-                  bottom: SizeConfig.getProportionateScreenHeight(150),
-                ),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      // bottomRight: Radius.circular(40),
-                    ),
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      child: Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            nameTextField(),
-                            emailTextField(),
-                            phNumberTextField(),
-                            passwordField(),
-                            _load
-                                ? signupButtonLoad()
-                                : dropDownValue == userType.Entrepreneur.name
-                                    ? signupButton(
-                                        theme,
-                                        context,
-                                        userType.Entrepreneur.index,
-                                      )
-                                    : signupButton(
-                                        theme,
-                                        context,
-                                        userType.Investor.index,
+    return _isProcessing
+        ? Center(child: CircularProgressIndicator())
+        : _isAutoLogin
+            ? HomeScreenInvestor()
+            : Scaffold(
+                backgroundColor: Color(0xff292C31),
+                body: ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      height: height,
+                      width: width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(height: height * (15 / 100)),
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: height * (1 / 100),
+                                ),
+                                Text(
+                                  _isLogin ? 'LOG IN' : 'SIGN UP',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffA9DED8),
+                                  ),
+                                ),
+                                SizedBox(),
+                                Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        if (!_isLogin)
+                                          textComponent(
+                                            height,
+                                            width,
+                                            false,
+                                            false,
+                                            false,
+                                            Icons.account_circle_outlined,
+                                            'Name',
+                                            _nameController,
+                                          ),
+                                        SizedBox(height: height * (2 / 100)),
+                                        textComponent(
+                                          height,
+                                          width,
+                                          false,
+                                          true,
+                                          false,
+                                          Icons.email_outlined,
+                                          'Email',
+                                          _emailController,
+                                        ),
+                                        SizedBox(height: height * (2 / 100)),
+                                        if (!_isLogin)
+                                          textComponent(
+                                            height,
+                                            width,
+                                            false,
+                                            false,
+                                            true,
+                                            Icons.phone,
+                                            'Phone number',
+                                            _phoneController,
+                                          ),
+                                        SizedBox(height: height * (2 / 100)),
+                                        textComponent(
+                                          height,
+                                          width,
+                                          true,
+                                          false,
+                                          false,
+                                          Icons.password_outlined,
+                                          'Password',
+                                          _passwordController,
+                                        ),
+                                        SizedBox(height: height * (2 / 100)),
+                                      ],
+                                    )),
+                                DropdownButton(
+                                  value: dropDownValue,
+                                  dropdownColor: Color(0xff292C31),
+                                  items: items.map((String items) {
+                                    return DropdownMenuItem(
+                                      child: Text(
+                                        items,
+                                        style: TextStyle(
+                                          color: Colors.white60,
+                                          fontSize: 17,
+                                        ),
                                       ),
-                            // _load
-                            //     ? signupButtonLoad()
-                            //     : dropDownValue == userType.investor.name
-                            //         ? signupButton(
-                            //             theme,
-                            //             context,
-                            //             // userType.investor,
-                            //             1,
-                            //           )
-                            //         : signupButton(
-                            //             theme,
-                            //             context,
-                            //             // userType.entrepreneur,
-                            //             0,
-                            //           ),
-                            // TextButton(
-                            //   onPressed: () {},
-                            //   child: Text('Already a user?'),
-                            // ),
-                            DropdownButton(
-                              value: dropDownValue,
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  child: Text(items),
-                                  value: items,
-                                );
-                              }).toList(),
-                              icon: Icon(Icons.arrow_drop_down_circle),
-                              onChanged: (String? newVal) {
-                                setState(() {
-                                  dropDownValue = newVal!;
-                                });
-                              },
+                                      value: items,
+                                    );
+                                  }).toList(),
+                                  icon: Icon(
+                                    Icons.arrow_drop_down_circle,
+                                    color: Colors.white60,
+                                  ),
+                                  onChanged: (String? newVal) {
+                                    setState(() {
+                                      dropDownValue = newVal!;
+                                    });
+                                  },
+                                ),
+                                _load
+                                    ? signupButtonLoad()
+                                    : _isLogin
+                                        ? dropDownValue ==
+                                                userType.Investor.name
+                                            ? loginButton(
+                                                theme, context, 0, _isLogin)
+                                            : loginButton(
+                                                theme, context, 1, _isLogin)
+                                        : dropDownValue ==
+                                                userType.Entrepreneur.name
+                                            ? signupButton(
+                                                theme,
+                                                context,
+                                                userType.Entrepreneur.index,
+                                              )
+                                            : signupButton(
+                                                theme,
+                                                context,
+                                                userType.Investor.index,
+                                              ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isLogin = !_isLogin;
+                                    });
+                                  },
+                                  child: !_isLogin
+                                      ? Text(
+                                          'Already a user?',
+                                          style: TextStyle(
+                                            color: Colors.white60,
+                                            fontSize: 20,
+                                          ),
+                                        )
+                                      : Text(
+                                          'New user?',
+                                          style: TextStyle(
+                                            color: Colors.white60,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                ),
+                                SizedBox(height: height * (10 / 100)),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              );
+  }
+
+  Container textComponent(
+    double height,
+    double width,
+    bool isPassword,
+    bool isEmail,
+    bool isPhone,
+    IconData icon,
+    String hintText,
+    TextEditingController controller,
+  ) {
+    return Container(
+      height: width / 8,
+      width: width / 1.21,
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(right: width / 30),
+      decoration: BoxDecoration(
+        color: Color(0xff212428),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: TextFormField(
+        controller: controller,
+        validator: (value) {
+          if (isPhone) {
+            if (value!.length != 10) {
+              return 'Check again!';
+            }
+          }
+          return null;
+        },
+        style: TextStyle(color: Colors.white.withOpacity(.9)),
+        obscureText: isPassword,
+        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            icon,
+            color: Colors.white.withOpacity(.7),
+          ),
+          border: InputBorder.none,
+          hintMaxLines: 1,
+          hintText: hintText,
+          hintStyle: TextStyle(
+            fontSize: 14,
+            color: Colors.white.withOpacity(.5),
           ),
         ),
       ),
     );
   }
 
-  TextFormField passwordField() {
-    return TextFormField(
-      controller: _passwordController,
-      obscureText: true,
-      decoration: InputDecoration(
-        label: Text('Password'),
-        icon: Icon(Icons.password),
-      ),
-    );
-  }
-
-  TextFormField phNumberTextField() {
-    return TextFormField(
-      controller: _phoneController,
-      validator: (value) {
-        if (value!.length != 10) {
-          return 'Check again!';
-        }
-        return null;
-      },
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-          label: Text('Contact number'), icon: Icon(Icons.contact_phone)),
-    );
-  }
-
-  TextFormField emailTextField() {
-    return TextFormField(
-      controller: _emailController,
-      decoration: InputDecoration(
-        label: Text('Email ID'),
-        icon: Icon(Icons.email),
-      ),
-    );
-  }
-
-  TextFormField nameTextField() {
-    return TextFormField(
-      controller: _nameController,
-      decoration: InputDecoration(
-        label: Text('Name'),
-        icon: Icon(Icons.text_fields),
+  Container loginButton(
+      ThemeData theme, BuildContext context, int index, bool isLogin) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: MaterialButton(
+        padding: EdgeInsets.all(10),
+        color: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        onPressed: () {
+          _load = true;
+          if (_formKey.currentState!.validate()) {
+            loginUser(index);
+          } else {
+            setState(() {
+              _load = false;
+            });
+          }
+          _formKey.currentState!.save();
+        },
+        child: !isLogin
+            ? Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : Text(
+                'Log In',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
@@ -309,7 +475,7 @@ class _SignupScreenState extends State<SignupScreen> {
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
         padding: EdgeInsets.all(10),
-        color: theme.buttonTheme.colorScheme!.primary,
+        color: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -326,7 +492,21 @@ class _SignupScreenState extends State<SignupScreen> {
           }
           _formKey.currentState!.save();
         },
-        child: Text('Sign Up'),
+        child: !_isLogin
+            ? Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : Text(
+                'Log In',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
@@ -336,5 +516,13 @@ class _SignupScreenState extends State<SignupScreen> {
       margin: EdgeInsets.only(top: 20),
       child: CircularProgressIndicator(),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
