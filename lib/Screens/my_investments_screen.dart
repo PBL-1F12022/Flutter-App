@@ -46,30 +46,28 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Investments'),
-      ),
-      body: Center(
-        child: _isFetched
-            ? investments.isEmpty
-                ? Text('No Investments')
-                : ListView.builder(
-                    itemCount: investments.length,
-                    itemBuilder: (context, index) {
-                      return EnterProfileCard(
-                        equity: investments[index]['equity'],
-                        askingPrice: investments[index]['amount'],
-                        description: '',
-                        id: '',
-                        owner: '',
-                        projName: '',
-                      );
-                    },
-                  )
-            : CircularProgressIndicator(),
-        // child: Text('data'),
-      ),
+    return Center(
+      child: _isFetched
+          ? investments.isEmpty
+              ? Text('No Investments')
+              : ListView.builder(
+                  itemCount: investments.length,
+                  itemBuilder: (context, index) {
+                    return EnterProfileCard(
+                      equity: investments[index]['equity'],
+                      askingPrice: investments[index]['amount'],
+                      description: investments[index]['project']['description'],
+                      id: investments[index]['project']['_id'],
+                      owner: investments[index]['project']['ownerName'],
+                      projName: investments[index]['project']['name'],
+                      sector: investments[index]['project']['sector'],
+                      sectorAccuracy: investments[index]['project']
+                          ['sectorAccuracy'],
+                    );
+                  },
+                )
+          : CircularProgressIndicator(),
+      // child: Text('data'),
     );
   }
 }

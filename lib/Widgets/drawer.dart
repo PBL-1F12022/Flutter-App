@@ -19,12 +19,12 @@ class HomeScreenDrawer extends StatelessWidget {
             },
             child: Text('Add project'),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(MyInvestmentsScreen.routeName);
-            },
-            child: Text('My Investments'),
-          )
+          //   TextButton(
+          //     onPressed: () {
+          //       Navigator.of(context).pushNamed(MyInvestmentsScreen.routeName);
+          //     },
+          //     child: Text('My Investments'),
+          //   )
         ],
       ),
     );

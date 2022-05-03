@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 import 'package:pbl2022_app/Widgets/drawer.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -87,7 +88,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
           ),
         ),
       ),
-      Container(child: Text('ABCD')),
+      MyInvestmentsScreen(),
     ];
 
     SizeConfig.init(context);
@@ -101,19 +102,20 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                 onTap: _selectIndex,
                 items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.abc),
-                    label: 'OP1',
+                    icon: Icon(Icons.home),
+                    label: 'All Projects',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.abc),
-                    label: 'OP2',
+                    icon: Icon(Icons.money_rounded),
+                    label: 'My Investments',
                   ),
                 ],
                 currentIndex: _index,
               ),
               drawer: HomeScreenDrawer(),
               appBar: AppBar(
-                title: Text('Home screen'),
+                title:
+                    _index == 0 ? Text('Home screen') : Text('My Investments'),
               ),
               body: screens[_index],
             ),
