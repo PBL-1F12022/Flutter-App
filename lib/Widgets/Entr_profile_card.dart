@@ -13,6 +13,8 @@ class EnterProfileCard extends StatefulWidget {
   late final int askingPrice;
   late final double equity;
   late final String owner;
+  late final sector;
+  late final sectorAccuracy;
   EnterProfileCard({
     this.askingPrice = 0,
     this.description = "",
@@ -20,6 +22,8 @@ class EnterProfileCard extends StatefulWidget {
     this.id = "",
     this.owner = "",
     this.projName = "",
+    this.sector = "",
+    this.sectorAccuracy = "",
   });
 
   @override
@@ -46,12 +50,14 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
     final theme = Theme.of(context);
     return Align(
       alignment: Alignment.center,
       child: Expanded(
         child: AspectRatio(
-          aspectRatio: 3 / 2.7,
+          aspectRatio: 3 / 3,
           child: Container(
             margin: EdgeInsets.symmetric(
               vertical: mediaQuery.size.height * (1 / 100),
@@ -64,62 +70,134 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
               ),
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.all(10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     projectText(theme, mediaQuery),
-                    IconButton(
-                      onPressed: () {
-                        _toggleBookMark();
-                      },
-                      icon: _isBookMarked
-                          ? Icon(
-                              Icons.bookmark_add,
-                            )
-                          : Icon(
-                              Icons.bookmark_add_outlined,
+                    Container(
+                      // decoration: BoxDecoration(border: Border.all()),
+                      width: width * (95 / 100),
+                      height: height * (20 / 100),
+                      child: Row(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: width * (45 / 100),
+                            // decoration: BoxDecoration(border: Border.all()),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: height * (1 / 100)),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Sector: ' + widget.sector,
+                                    style: theme.textTheme.headline2,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                SizedBox(height: height * (1 / 100)),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    'Accuracy: ' +
+                                        widget.sectorAccuracy.toString(),
+                                    style: theme.textTheme.headline2,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                SizedBox(height: height * (1 / 100)),
+                                askingPriceText(theme),
+                              ],
                             ),
+                          ),
+                          progressIndicator(context, mediaQuery)
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: descriptionText(theme),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: mediaQuery.size.width * (40 / 100),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              descriptionText(theme),
-                              SizedBox(
-                                  height: mediaQuery.size.height * (2 / 100)),
-                              askingPriceText(theme),
-                              equityText(theme),
-                            ],
-                          ),
+                        IconButton(
+                          onPressed: () {
+                            _toggleBookMark();
+                          },
+                          icon: _isBookMarked
+                              ? Icon(
+                                  Icons.bookmark_add,
+                                )
+                              : Icon(
+                                  Icons.bookmark_add_outlined,
+                                ),
                         ),
-                        SizedBox(width: mediaQuery.size.width * (2 / 100)),
-                        SizedBox(
-                          width: mediaQuery.size.width * (40 / 100),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                  height: mediaQuery.size.height * (1 / 100)),
-                              progressIndicator(context, mediaQuery),
-                              SizedBox(
-                                  height: mediaQuery.size.height * (1 / 100)),
-                              ownerText(theme),
-                            ],
-                          ),
-                        ),
+                        ownerText(theme),
                       ],
                     ),
                   ],
                 ),
               ),
+              // child: Container(
+              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //   child: Column(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [
+              //       projectText(theme, mediaQuery),
+              //       IconButton(
+              //         onPressed: () {
+              //           _toggleBookMark();
+              //         },
+              //         icon: _isBookMarked
+              //             ? Icon(
+              //                 Icons.bookmark_add,
+              //               )
+              //             : Icon(
+              //                 Icons.bookmark_add_outlined,
+              //               ),
+              //       ),
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           SizedBox(
+              //             width: mediaQuery.size.width * (40 / 100),
+              //             child: Column(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               crossAxisAlignment: CrossAxisAlignment.center,
+              //               children: [
+              //                 descriptionText(theme),
+              //                 SizedBox(
+              //                     height: mediaQuery.size.height * (2 / 100)),
+              //                 askingPriceText(theme),
+              //                 equityText(theme),
+              //               ],
+              //             ),
+              //           ),
+              //           SizedBox(width: mediaQuery.size.width * (2 / 100)),
+              //           SizedBox(
+              //             width: mediaQuery.size.width * (40 / 100),
+              //             child: Column(
+              //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //               crossAxisAlignment: CrossAxisAlignment.end,
+              //               children: [
+              //                 SizedBox(
+              //                     height: mediaQuery.size.height * (1 / 100)),
+              //                 progressIndicator(context, mediaQuery),
+              //                 SizedBox(
+              //                     height: mediaQuery.size.height * (1 / 100)),
+              //                 ownerText(theme),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ),
           ),
         ),
@@ -144,7 +222,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
   CircularPercentIndicator progressIndicator(
       BuildContext context, MediaQueryData mediaQuery) {
     return CircularPercentIndicator(
-      radius: mediaQuery.size.width * (20 / 100),
+      radius: mediaQuery.size.width * (18 / 100),
       center: Text(
         (widget.equity * 100).toStringAsFixed(2) + '%',
         maxLines: 1,
@@ -171,11 +249,12 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
 
   Align askingPriceText(ThemeData theme) {
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.topLeft,
       child: Text(
         'Ask: ${widget.askingPrice}',
         style: theme.textTheme.headline3,
         textAlign: TextAlign.left,
+        maxLines: 2,
       ),
     );
   }
@@ -210,4 +289,3 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
     );
   }
 }
-

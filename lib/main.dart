@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
-          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 26),
+          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 22),
           headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
           bodyText1: TextStyle(
             fontSize: 20,

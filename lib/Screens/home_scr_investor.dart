@@ -84,6 +84,8 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                     id: projects[index].id,
                     owner: projects[index].ownerName,
                     projName: projects[index].name,
+                    sector: projects[index].sector,
+                    sectorAccuracy: projects[index].sectorAccuracy,
                   ),
                 ),
               ),
