@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 
@@ -60,8 +60,36 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
     super.initState();
   }
 
+  void _selectIndex(int index) {
+    setState(() {
+      _index = index;
+    });
+  }
+
+  int _index = 0;
+
   @override
   Widget build(BuildContext context) {
+    final List screens = [
+      RefreshIndicator(
+        onRefresh: getProjectsList,
+        child: ListView.builder(
+          itemCount: projects.length,
+          itemBuilder: (context, index) => EnterProfileCard(
+            askingPrice: projects[index].askingPrice,
+            description: projects[index].description,
+            equity: projects[index].equity,
+            id: projects[index].id,
+            owner: projects[index].ownerName,
+            projName: projects[index].name,
+            sector: projects[index].sector,
+            sectorAccuracy: projects[index].sectorAccuracy,
+          ),
+        ),
+      ),
+      Container(child: Text('ABCD')),
+    ];
+
     SizeConfig.init(context);
     return _load
         ? const Center(
@@ -69,26 +97,25 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
           )
         : SafeArea(
             child: Scaffold(
+              bottomNavigationBar: BottomNavigationBar(
+                onTap: _selectIndex,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.abc),
+                    label: 'OP1',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.abc),
+                    label: 'OP2',
+                  ),
+                ],
+                currentIndex: _index,
+              ),
               drawer: HomeScreenDrawer(),
               appBar: AppBar(
                 title: Text('Home screen'),
               ),
-              body: RefreshIndicator(
-                onRefresh: getProjectsList,
-                child: ListView.builder(
-                  itemCount: projects.length,
-                  itemBuilder: (context, index) => EnterProfileCard(
-                    askingPrice: projects[index].askingPrice,
-                    description: projects[index].description,
-                    equity: projects[index].equity,
-                    id: projects[index].id,
-                    owner: projects[index].ownerName,
-                    projName: projects[index].name,
-                    sector: projects[index].sector,
-                    sectorAccuracy: projects[index].sectorAccuracy,
-                  ),
-                ),
-              ),
+              body: screens[_index],
             ),
           );
   }
