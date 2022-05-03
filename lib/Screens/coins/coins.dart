@@ -9,6 +9,7 @@ import '../../constants/urls.dart';
 
 class Coins extends StatefulWidget {
   const Coins({Key? key}) : super(key: key);
+  static const routeName = '/coins_screen';
 
   @override
   State<Coins> createState() => _CoinsState();

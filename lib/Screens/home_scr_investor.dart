@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
+import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 import 'package:pbl2022_app/Widgets/drawer.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -21,12 +23,16 @@ class HomeScreenInvestor extends StatefulWidget {
 }
 
 class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
+  late final String userType;
   bool _load = true;
   List<ProjectIdea> projects = [];
 
   Future getProjectsList() async {
     projects.clear();
+      final storage = FlutterSecureStorage();
+      userType = (await storage.read(key: 'userType'))!;
     try {
+      // userType = (await storage.read(key: 'userType'))!;
       final response = await http.get(Uri.parse(getProjectsUrl));
       if (response.statusCode == 200) {
         List data = jsonDecode(response.body);
@@ -55,8 +61,9 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
   @override
   void initState() {
-    // final storage = FlutterSecureStorage();
     // storage.deleteAll();
+    // Future.delayed(Duration.zero, () {});
+    // loadUserType();
     getProjectsList();
     super.initState();
   }
@@ -85,10 +92,12 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
             projName: projects[index].name,
             sector: projects[index].sector,
             sectorAccuracy: projects[index].sectorAccuracy,
+            userType: userType,
           ),
         ),
       ),
-      MyInvestmentsScreen(),
+      if (userType == 'investor') MyInvestmentsScreen(),
+      if (userType == 'entrepreneur') MyProjectsScreen(),
     ];
 
     SizeConfig.init(context);
@@ -106,16 +115,23 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                     label: 'All Projects',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.money_rounded),
-                    label: 'My Investments',
+                    icon: userType == 'investor'
+                        ? Icon(Icons.money_rounded)
+                        : Icon(Icons.work),
+                    label: userType == 'investor'
+                        ? 'My Investments'
+                        : 'My Projects',
                   ),
                 ],
                 currentIndex: _index,
               ),
-              drawer: HomeScreenDrawer(),
+              drawer: HomeScreenDrawer(userType),
               appBar: AppBar(
-                title:
-                    _index == 0 ? Text('Home screen') : Text('My Investments'),
+                title: _index == 0
+                    ? Text('Home screen')
+                    : userType == 'investor'
+                        ? Text('My Investments')
+                        : Text('My Projects'),
               ),
               body: screens[_index],
             ),

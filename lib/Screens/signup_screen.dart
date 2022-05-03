@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Screens/drawers.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -18,7 +19,7 @@ class SignupScreen extends StatefulWidget {
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
-enum userType { Investor, Entrepreneur }
+enum _userType { Investor, Entrepreneur }
 String dropDownValue = 'Investor';
 String tokenString = "";
 
@@ -45,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Future isUserLoggedIn() async {
     try {
       String? tokenString = await storage.read(key: 'token');
-
+      String? userType = await storage.read(key: 'userType');
       if (tokenString != null) {
         setState(() {
           _isAutoLogin = true;
@@ -57,7 +58,9 @@ class _SignupScreenState extends State<SignupScreen> {
           _isProcessing = false;
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future loginUser(int index) async {
@@ -81,8 +84,8 @@ class _SignupScreenState extends State<SignupScreen> {
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         await storage.write(key: 'token', value: result['token']);
-        // await storage.write(
-        //     key: 'userType', value: index == 0 ? 'investor' : 'entrepreneur');
+        await storage.write(
+            key: 'userType', value: index == 0 ? 'investor' : 'entrepreneur');
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {}
@@ -217,6 +220,7 @@ class _SignupScreenState extends State<SignupScreen> {
         ? Center(child: CircularProgressIndicator())
         : _isAutoLogin
             ? HomeScreenInvestor()
+            // ? MyDrawer()
             : Scaffold(
                 backgroundColor: Color(0xff292C31),
                 body: ScrollConfiguration(
@@ -331,22 +335,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                     ? signupButtonLoad()
                                     : _isLogin
                                         ? dropDownValue ==
-                                                userType.Investor.name
+                                                _userType.Investor.name
                                             ? loginButton(
                                                 theme, context, 0, _isLogin)
                                             : loginButton(
                                                 theme, context, 1, _isLogin)
                                         : dropDownValue ==
-                                                userType.Entrepreneur.name
+                                                _userType.Entrepreneur.name
                                             ? signupButton(
                                                 theme,
                                                 context,
-                                                userType.Entrepreneur.index,
+                                                _userType.Entrepreneur.index,
                                               )
                                             : signupButton(
                                                 theme,
                                                 context,
-                                                userType.Investor.index,
+                                                _userType.Investor.index,
                                               ),
                                 TextButton(
                                   onPressed: () {

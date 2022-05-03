@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
         MyInvestmentsScreen.routeName: (context) => MyInvestmentsScreen(),
+        Coins.routeName: (context) => Coins(),
       },
     );
   }
