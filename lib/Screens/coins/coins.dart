@@ -24,13 +24,14 @@ class _CoinsState extends State<Coins> {
   final TextEditingController _sellCoin = TextEditingController();
 
   bool _load = true;
-
-  Future getBalance(String type) async {
+  late final type;
+  Future getBalance() async {
     try {
+      final String? type = await storage.read(key: 'userType');
       String? token = await storage.read(key: 'token');
 
       final response = await http.get(
-        Uri.parse(coinsUrl + type + "/balance"),
+        Uri.parse(coinsUrl + type! + "/balance"),
         headers: {
           "Authorization": "Bearer $token",
         },
@@ -139,7 +140,7 @@ class _CoinsState extends State<Coins> {
   @override
   void initState() {
     _load = true;
-    getBalance("investor");
+    getBalance();
     super.initState();
   }
 

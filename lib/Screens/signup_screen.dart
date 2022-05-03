@@ -81,6 +81,8 @@ class _SignupScreenState extends State<SignupScreen> {
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         await storage.write(key: 'token', value: result['token']);
+        // await storage.write(
+        //     key: 'userType', value: index == 0 ? 'investor' : 'entrepreneur');
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {}
@@ -112,6 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
         await storage.write(
             key: 'password', value: _passwordController.text.trim());
         await storage.write(key: 'token', value: result['token']);
+        await storage.write(key: 'userType', value: 'investor');
 
         Fluttertoast.showToast(
           msg: 'sign-up successful',
@@ -174,10 +177,12 @@ class _SignupScreenState extends State<SignupScreen> {
         });
         // print('Entrepreneur added');
         final data = jsonDecode(response.body);
-        await storage.write(key: 'index', value: '2');
-        await storage.write(key: 'email', value: data['keyValue']['email']);
-        await storage.write(
-            key: 'password', value: _passwordController.text.trim());
+        // await storage.write(key: 'index', value: '2');
+        // await storage.write(key: 'email', value: data['keyValue']['email']);
+        // await storage.write(
+        //     key: 'password', value: _passwordController.text.trim());
+        await storage.write(key: 'userType', value: 'entrepreneur');
+
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
       } else {

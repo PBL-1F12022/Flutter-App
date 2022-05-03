@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:pbl2022_app/Screens/coins/coins.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/project_enter_screen.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SignupScreen(),
+      // home: SignupScreen(),
+      home: Coins(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
