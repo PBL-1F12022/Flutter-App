@@ -1,6 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_constructors_in_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
@@ -13,8 +17,8 @@ class EnterProfileCard extends StatefulWidget {
   late final int askingPrice;
   late final double equity;
   late final String owner;
-  late final sector;
-  late final sectorAccuracy;
+  late final String sector;
+  late final double sectorAccuracy;
   EnterProfileCard({
     this.askingPrice = 0,
     this.description = "",
@@ -23,7 +27,7 @@ class EnterProfileCard extends StatefulWidget {
     this.owner = "",
     this.projName = "",
     this.sector = "",
-    this.sectorAccuracy = "",
+    this.sectorAccuracy = 0,
   });
 
   @override
@@ -34,17 +38,39 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
   bool _isBookMarked = false;
 
   Future _toggleBookMark() async {
-    final url = Uri.parse(bookmarkUrl);
-    final response = await http.post(
-      url,
-      body: {
-        'bookmark': widget.id.toString(),
-      },
-    );
-    print(response.body);
-    setState(() {
-      _isBookMarked = true;
-    });
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'token');
+      final url = Uri.parse(bookmarkUrl);
+      final response = await http.post(url,
+          body: jsonEncode({
+            'bookmark': widget.id.toString(),
+          }),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          });
+      print(response.body);
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: 'Project bookmarked',
+          backgroundColor: Colors.red.shade600,
+        );
+        setState(() {
+          _isBookMarked = !_isBookMarked;
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Could not mark',
+          backgroundColor: Colors.red.shade600,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Something went wrong',
+        backgroundColor: Colors.red.shade600,
+      );
+    }
   }
 
   @override
@@ -123,18 +149,22 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            _toggleBookMark();
-                          },
-                          icon: _isBookMarked
-                              ? Icon(
-                                  Icons.bookmark_add,
-                                )
-                              : Icon(
-                                  Icons.bookmark_add_outlined,
-                                ),
+                        TextButton(
+                          onPressed: _toggleBookMark,
+                          child: Text('Add bookmark'),
                         ),
+                        // IconButton(
+                        //   onPressed: () {
+                        //     _toggleBookMark();
+                        //   },
+                        //   icon: _isBookMarked
+                        //       ? Icon(
+                        //           Icons.bookmark_add,
+                        //         )
+                        //       : Icon(
+                        //           Icons.bookmark_add_outlined,
+                        //         ),
+                        // ),
                         ownerText(theme),
                       ],
                     ),

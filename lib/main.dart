@@ -36,8 +36,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      // home: SignupScreen(),
-      home: Coins(),
+      home: SignupScreen(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
