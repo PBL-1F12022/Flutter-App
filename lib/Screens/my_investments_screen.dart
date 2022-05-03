@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 
 import 'package:pbl2022_app/constants/urls.dart';
 
@@ -19,7 +22,7 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
   Future _getMyInvestments() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
-    final url = Uri.parse(getInvestorInfo);
+    final url = Uri.parse(getInvestmentsUrl);
 
     final response = await http.get(
       url,
@@ -28,7 +31,9 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
       },
     );
     print(response.body);
+    final data = jsonDecode(response.body);
     setState(() {
+      investments = data;
       _isFetched = true;
     });
   }
@@ -46,7 +51,23 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
         title: Text('My Investments'),
       ),
       body: Center(
-        child: _isFetched ? Text('SCREEN') : CircularProgressIndicator(),
+        child: _isFetched
+            ? investments.isEmpty
+                ? Text('No Investments')
+                : ListView.builder(
+                    itemCount: investments.length,
+                    itemBuilder: (context, index) {
+                      return EnterProfileCard(
+                        equity: investments[index]['equity'],
+                        askingPrice: investments[index]['amount'],
+                        description: '',
+                        id: '',
+                        owner: '',
+                        projName: '',
+                      );
+                    },
+                  )
+            : CircularProgressIndicator(),
         // child: Text('data'),
       ),
     );
