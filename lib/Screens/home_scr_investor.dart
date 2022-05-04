@@ -84,16 +84,25 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
         onRefresh: getProjectsList,
         child: ListView.builder(
           itemCount: projects.length,
-          itemBuilder: (context, index) => EnterProfileCard(
-            askingPrice: projects[index].askingPrice,
-            description: projects[index].description,
-            equity: projects[index].equity,
-            id: projects[index].id,
-            owner: projects[index].ownerName,
-            projName: projects[index].name,
-            sector: projects[index].sector,
-            sectorAccuracy: projects[index].sectorAccuracy,
-            userType: userType as String,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return InvestDialog(id: projects[index].id);
+                  });
+            },
+            child: EnterProfileCard(
+              askingPrice: projects[index].askingPrice,
+              description: projects[index].description,
+              equity: projects[index].equity,
+              id: projects[index].id,
+              owner: projects[index].ownerName,
+              projName: projects[index].name,
+              sector: projects[index].sector,
+              sectorAccuracy: projects[index].sectorAccuracy,
+              userType: userType as String,
+            ),
           ),
         ),
       ),
