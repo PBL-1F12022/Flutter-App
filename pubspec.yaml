@@ -67,6 +67,7 @@ flutter:
     - assets/images/signup_image.jpg
     - assets/images/signup_image2.jpg
     - assets/images/signup_image3.jpg
+    - assets/images/
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
