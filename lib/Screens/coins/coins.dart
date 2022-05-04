@@ -101,7 +101,7 @@ class _CoinsState extends State<Coins> {
   Future sellCoins(BuildContext context) async {
     try {
       Map data = {
-        "coins": _sellCoin.text.trim(),
+        "coins": int.parse(_sellCoin.text.trim()),
       };
       final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
@@ -335,8 +335,9 @@ class _CoinsState extends State<Coins> {
                                   const Color.fromARGB(255, 236, 147, 123),
                                 ),
                               ),
-                              onPressed: () {
-                                sellCoins(context);
+                              onPressed: () async {
+                                await sellCoins(context);
+                                _sellCoin.clear();
                               },
                               child: const Text(
                                 "Sell",
