@@ -23,14 +23,15 @@ class HomeScreenInvestor extends StatefulWidget {
 }
 
 class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
-  late final String userType;
+  String? userType;
   bool _load = true;
   List<ProjectIdea> projects = [];
 
   Future getProjectsList() async {
     projects.clear();
-      final storage = FlutterSecureStorage();
-      userType = (await storage.read(key: 'userType'))!;
+    final storage = FlutterSecureStorage();
+    userType = (await storage.read(key: 'userType'))!;
+    Future.delayed(Duration.zero);
     try {
       // userType = (await storage.read(key: 'userType'))!;
       final response = await http.get(Uri.parse(getProjectsUrl));
@@ -92,7 +93,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
             projName: projects[index].name,
             sector: projects[index].sector,
             sectorAccuracy: projects[index].sectorAccuracy,
-            userType: userType,
+            userType: userType as String,
           ),
         ),
       ),
@@ -125,7 +126,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                 ],
                 currentIndex: _index,
               ),
-              drawer: HomeScreenDrawer(userType),
+              drawer: HomeScreenDrawer(userType as String),
               appBar: AppBar(
                 title: _index == 0
                     ? Text('Home screen')

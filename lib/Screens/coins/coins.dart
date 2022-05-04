@@ -58,16 +58,16 @@ class _CoinsState extends State<Coins> {
     }
   }
 
-  Future buyCoins(BuildContext context, String type) async {
+  Future buyCoins(BuildContext context) async {
     try {
       Map data = {
         "coins": _buyCoin.text.trim(),
       };
-
+      final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
 
       final response = await http.post(
-        Uri.parse(coinsUrl + type + "/buy"),
+        Uri.parse(coinsUrl + type! + "/buy"),
         body: jsonEncode(data),
         headers: {
           "Content-Type": "application/json",
@@ -98,16 +98,16 @@ class _CoinsState extends State<Coins> {
     }
   }
 
-  Future sellCoins(BuildContext context, String type) async {
+  Future sellCoins(BuildContext context) async {
     try {
       Map data = {
         "coins": _sellCoin.text.trim(),
       };
-
+      final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
 
       final response = await http.post(
-        Uri.parse(coinsUrl + type + "/sell"),
+        Uri.parse(coinsUrl + type! + "/sell"),
         body: jsonEncode(data),
         headers: {
           "Content-Type": "application/json",
@@ -257,7 +257,7 @@ class _CoinsState extends State<Coins> {
                                 ),
                               ),
                               onPressed: () {
-                                buyCoins(context, "investor");
+                                buyCoins(context);
                               },
                               child: const Text(
                                 "Buy",
@@ -335,7 +335,7 @@ class _CoinsState extends State<Coins> {
                                 ),
                               ),
                               onPressed: () {
-                                sellCoins(context, "investor");
+                                sellCoins(context);
                               },
                               child: const Text(
                                 "Sell",

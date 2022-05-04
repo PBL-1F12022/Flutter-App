@@ -20,11 +20,11 @@ class MyInvestmentsScreen extends StatefulWidget {
 class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
   bool _isFetched = false;
   List investments = [];
-  late final String userType;
+  String? userType;
   Future _getMyInvestments() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
-    userType = await storage.read(key: 'userType') as String;
+    userType = await storage.read(key: 'userType');
     final url = Uri.parse(getInvestmentsUrl);
 
     final response = await http.get(
@@ -70,7 +70,7 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                           sector: investments[index]['project']['sector'],
                           sectorAccuracy: investments[index]['project']
                               ['sectorAccuracy'],
-                          userType: userType,
+                          userType: userType as String,
                         );
                       },
                     )
