@@ -61,7 +61,7 @@ class _CoinsState extends State<Coins> {
   Future buyCoins(BuildContext context) async {
     try {
       Map data = {
-        "coins": _buyCoin.text.trim(),
+        "coins": int.parse(_buyCoin.text.trim()),
       };
       final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
@@ -81,7 +81,7 @@ class _CoinsState extends State<Coins> {
           msg: result['msg'] ?? "Coins credited to account",
           backgroundColor: Colors.red.shade600,
         );
-        balance += int.parse(_buyCoin.text);
+        balance += int.parse(_buyCoin.text.trim());
         setState(() {});
       } else {
         var result = jsonDecode(response.body);
@@ -256,8 +256,9 @@ class _CoinsState extends State<Coins> {
                                   const Color.fromARGB(255, 155, 236, 123),
                                 ),
                               ),
-                              onPressed: () {
-                                buyCoins(context);
+                              onPressed: () async {
+                                await buyCoins(context);
+                                _buyCoin.clear();
                               },
                               child: const Text(
                                 "Buy",

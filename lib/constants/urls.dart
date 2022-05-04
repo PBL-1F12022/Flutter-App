@@ -9,6 +9,8 @@ const getInvestmentsUrl = baseUrl + '/investor/investments';
 
 const signUpEntrepreneurUrl = baseUrl + "/entrepreneur";
 const loginEntrepreneurUrl = baseUrl + '/entrepreneur/login';
+const getMyProjectsUrl = baseUrl + '/entrepreneur/invested_details';
+const getInvestorsListUrl = baseUrl + '/entrepreneur/invested_details';
 
 const coinsUrl = baseUrl + "/coins/";
 

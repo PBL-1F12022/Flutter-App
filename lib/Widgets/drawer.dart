@@ -5,12 +5,30 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pbl2022_app/Screens/coins/coins.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
+import 'package:pbl2022_app/Screens/profile.dart';
 import 'package:pbl2022_app/Screens/project_enter_screen.dart';
 import 'package:pbl2022_app/Screens/signup_screen.dart';
 
-class HomeScreenDrawer extends StatelessWidget {
+class HomeScreenDrawer extends StatefulWidget {
   final String userType;
   const HomeScreenDrawer(this.userType);
+
+  @override
+  State<HomeScreenDrawer> createState() => _HomeScreenDrawerState();
+}
+
+class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
+  Future _logOut() async {
+    final storage = FlutterSecureStorage();
+    await storage.deleteAll();
+    // final str = await storage.read(key: 'userType');
+    while (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+    Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +41,7 @@ class HomeScreenDrawer extends StatelessWidget {
             },
             child: Text('Add project'),
           ),
-          if (userType == 'investor')
+          if (widget.userType == 'investor')
             TextButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(MyInvestmentsScreen.routeName);
@@ -33,11 +51,14 @@ class HomeScreenDrawer extends StatelessWidget {
           TextButton(
             onPressed: () {
               //My Profile
+              Navigator.of(context).pushNamed(Profile.routeName);
             },
             child: Text('My Profile'),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              _logOut();
+            },
             child: Text('Log Out'),
           ),
           TextButton(
