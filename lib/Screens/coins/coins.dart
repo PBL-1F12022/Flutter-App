@@ -9,6 +9,7 @@ import '../../constants/urls.dart';
 
 class Coins extends StatefulWidget {
   const Coins({Key? key}) : super(key: key);
+  static const routeName = '/coins_screen';
 
   @override
   State<Coins> createState() => _CoinsState();
@@ -24,13 +25,14 @@ class _CoinsState extends State<Coins> {
   final TextEditingController _sellCoin = TextEditingController();
 
   bool _load = true;
-
-  Future getBalance(String type) async {
+  late final type;
+  Future getBalance() async {
     try {
+      final String? type = await storage.read(key: 'userType');
       String? token = await storage.read(key: 'token');
 
       final response = await http.get(
-        Uri.parse(coinsUrl + type + "/balance"),
+        Uri.parse(coinsUrl + type! + "/balance"),
         headers: {
           "Authorization": "Bearer $token",
         },
@@ -56,16 +58,16 @@ class _CoinsState extends State<Coins> {
     }
   }
 
-  Future buyCoins(BuildContext context, String type) async {
+  Future buyCoins(BuildContext context) async {
     try {
       Map data = {
-        "coins": _buyCoin.text.trim(),
+        "coins": int.parse(_buyCoin.text.trim()),
       };
-
+      final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
 
       final response = await http.post(
-        Uri.parse(coinsUrl + type + "/buy"),
+        Uri.parse(coinsUrl + type! + "/buy"),
         body: jsonEncode(data),
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +81,7 @@ class _CoinsState extends State<Coins> {
           msg: result['msg'] ?? "Coins credited to account",
           backgroundColor: Colors.red.shade600,
         );
-        balance += int.parse(_buyCoin.text);
+        balance += int.parse(_buyCoin.text.trim());
         setState(() {});
       } else {
         var result = jsonDecode(response.body);
@@ -96,16 +98,16 @@ class _CoinsState extends State<Coins> {
     }
   }
 
-  Future sellCoins(BuildContext context, String type) async {
+  Future sellCoins(BuildContext context) async {
     try {
       Map data = {
         "coins": _sellCoin.text.trim(),
       };
-
+      final String? type = await storage.read(key: 'userType');
       final token = await storage.read(key: 'token');
 
       final response = await http.post(
-        Uri.parse(coinsUrl + type + "/sell"),
+        Uri.parse(coinsUrl + type! + "/sell"),
         body: jsonEncode(data),
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +141,7 @@ class _CoinsState extends State<Coins> {
   @override
   void initState() {
     _load = true;
-    getBalance("investor");
+    getBalance();
     super.initState();
   }
 
@@ -254,8 +256,9 @@ class _CoinsState extends State<Coins> {
                                   const Color.fromARGB(255, 155, 236, 123),
                                 ),
                               ),
-                              onPressed: () {
-                                buyCoins(context, "investor");
+                              onPressed: () async {
+                                await buyCoins(context);
+                                _buyCoin.clear();
                               },
                               child: const Text(
                                 "Buy",
@@ -333,7 +336,7 @@ class _CoinsState extends State<Coins> {
                                 ),
                               ),
                               onPressed: () {
-                                sellCoins(context, "investor");
+                                sellCoins(context);
                               },
                               child: const Text(
                                 "Sell",

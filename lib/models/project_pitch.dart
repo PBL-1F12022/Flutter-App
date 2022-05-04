@@ -9,6 +9,8 @@ class ProjectIdea {
   final double equity;
   final String owner;
   final String ownerName;
+  final double sectorAccuracy;
+  final String sector;
 
   ProjectIdea({
     required this.id,
@@ -18,6 +20,8 @@ class ProjectIdea {
     required this.equity,
     required this.owner,
     required this.ownerName,
+    required this.sector,
+    required this.sectorAccuracy,
   });
 
   factory ProjectIdea.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class ProjectIdea {
       askingPrice: json['askingPrice'],
       equity: json['equity'],
       ownerName: json['ownerName'],
+      sector: json['sector'],
+      sectorAccuracy: json['sectorAccuracy'],
     );
   }
 }
