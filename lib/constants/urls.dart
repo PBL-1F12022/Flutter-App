@@ -15,3 +15,4 @@ const getInvestorsListUrl = baseUrl + '/entrepreneur/invested_details';
 const coinsUrl = baseUrl + "/coins/";
 
 const bookmarkUrl = baseUrl + '/bookmark';
+const investUrl = baseUrl + '/investor/invest';

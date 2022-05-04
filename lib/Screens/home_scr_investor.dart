@@ -139,3 +139,329 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
           );
   }
 }
+
+class InvestDialog extends StatelessWidget {
+  final String id;
+  const InvestDialog({required this.id});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    var deviceHeight = MediaQuery.of(context).size.height;
+    return Stack(
+      children: [
+        Container(
+          padding:
+              const EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 51, 51, 51),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(color: Colors.black, offset: Offset(0.0, 2.0)),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: deviceHeight * 0.02),
+                alignment: Alignment.center,
+                child: Column(
+                  children: const [
+                    Text(
+                      "Investment",
+                      style: TextStyle(
+                        color: Color(0xffe20000),
+                        fontSize: 28,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Rajdhani',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "You can invest in this project!",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 161, 161, 161),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Rajdhani',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 26,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: deviceHeight * 0.055,
+                      width: deviceHeight * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(11),
+                        color: const Color(0xffe20000),
+                      ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return BuyInvestDialog(id: id);
+                          });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: deviceHeight * 0.055,
+                      width: deviceHeight * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(11),
+                        color: const Color(0xffe20000),
+                      ),
+                      child: const Text(
+                        "Invest",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 15,
+          left: 10,
+          right: 10,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.13,
+            child: Image.network(
+                "https://icon-library.com/images/investment-icon-png/investment-icon-png-6.jpg"),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BuyInvestDialog extends StatelessWidget {
+  final String id;
+  BuyInvestDialog({required this.id});
+  final storage = const FlutterSecureStorage();
+  final TextEditingController _buyCoin = TextEditingController();
+
+  Future investProject() async {
+    try {
+      Map data = {
+        "project_id": id,
+        "amount": int.parse(_buyCoin.text.trim()),
+      };
+
+      final token = await storage.read(key: 'token');
+
+      final response = await http.post(
+        Uri.parse(investUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: result['msg'] ?? "Coins debited from account",
+          backgroundColor: Colors.red.shade600,
+        );
+      } else {
+        var result = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: result['msg'] ?? "Error while performing transaction",
+          backgroundColor: Colors.red.shade600,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Please try again later',
+        backgroundColor: Colors.red.shade600,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    var deviceHeight = MediaQuery.of(context).size.height;
+    return Stack(
+      children: [
+        Container(
+          padding:
+              const EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 51, 51, 51),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(color: Colors.black, offset: Offset(0.0, 2.0)),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: deviceHeight * 0.02),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Text(
+                      "Invest",
+                      style: TextStyle(
+                        color: Color(0xffe20000),
+                        fontSize: 28,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Rajdhani',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: size.height * 0.90,
+                        height: size.width * 0.20,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 77, 207, 7),
+                              Color.fromARGB(255, 155, 236, 123),
+                            ],
+                            begin: FractionalOffset.centerLeft,
+                            end: FractionalOffset.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 253, 243, 243),
+                              offset: Offset(
+                                1.0,
+                                1.0,
+                              ),
+                              blurRadius: 3.0,
+                              spreadRadius: 0.5,
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      const Color.fromARGB(255, 155, 236, 123),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    await investProject();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    "Buy",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                  child: TextFormField(
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                    controller: _buyCoin,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      hintText: "0",
+                                      hintStyle: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 26,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 15,
+          left: 10,
+          right: 10,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.13,
+            child: Image.network(
+                "https://icon-library.com/images/investment-icon-png/investment-icon-png-6.jpg"),
+          ),
+        ),
+      ],
+    );
+  }
+}
