@@ -13,3 +13,4 @@ const loginEntrepreneurUrl = baseUrl + '/entrepreneur/login';
 const coinsUrl = baseUrl + "/coins/";
 
 const bookmarkUrl = baseUrl + '/bookmark';
+const investUrl = baseUrl + '/investor/invest';
