@@ -63,10 +63,15 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(
-            InvestorDetails.routeName,
-            arguments: curID,
-          );
+          // Navigator.of(context).pushNamed(
+          //   InvestorDetails.routeName,
+          //   arguments: curID,
+          // );
+          print(curID);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => InvestorDetails(id: curID)));
         },
         child: SizedBox(
           height: height,
