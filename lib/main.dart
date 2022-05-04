@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:pbl2022_app/Screens/coins/coins.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
+import 'package:pbl2022_app/Screens/investor_details_screen.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
+import 'package:pbl2022_app/Screens/profile.dart';
 import 'package:pbl2022_app/Screens/project_enter_screen.dart';
 import 'package:pbl2022_app/Screens/signup_screen.dart';
 
@@ -36,12 +38,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      // home: SignupScreen(),
-      home: Coins(),
+      home: SignupScreen(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
         MyInvestmentsScreen.routeName: (context) => MyInvestmentsScreen(),
+        Coins.routeName: (context) => Coins(),
+        Profile.routeName: (context) => Profile(),
+        SignupScreen.routeName: (context) => SignupScreen(),
+        InvestorDetails.routeName: (context) => InvestorDetails(id: ''),
       },
     );
   }

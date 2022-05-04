@@ -9,7 +9,7 @@ import '../constants/urls.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
-
+  static const routeName = '/profile';
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -44,10 +44,10 @@ class _ProfileState extends State<Profile> {
 
   getUserInfo() async {
     String? token = await storage.read(key: 'token');
-    String? type = await storage.read(key: 'type');
-    token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjZiZmYyNDNmOWE3ZWUyMjgyNGMwZjYiLCJpYXQiOjE2NTE0MDE4NjR9.1umKWOSv8rWIhJZbnVlJSpCEEuD3PqQscobZiA8r4_A";
-    type = "investor";
+    String? type = await storage.read(key: 'userType');
+    // token =
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjZiZmYyNDNmOWE3ZWUyMjgyNGMwZjYiLCJpYXQiOjE2NTE0MDE4NjR9.1umKWOSv8rWIhJZbnVlJSpCEEuD3PqQscobZiA8r4_A";
+    // type = "investor";
 
     if (token == null) {
       print("User not logged in");
@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> {
       try {
         Map<String, String> headers = {"Authorization": "Bearer $token"};
         final response = await http.get(
-          Uri.parse(baseUrl + "/" + type + "/me"),
+          Uri.parse(baseUrl + "/" + type! + "/me"),
           headers: headers,
         );
         if (response.statusCode == 200) {
