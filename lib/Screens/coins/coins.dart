@@ -150,7 +150,11 @@ class _CoinsState extends State<Coins> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: CustomAppBar(title: 'Coin Portal'),
+      appBar: AppBar(
+        title: const Text("Coin Portal"),
+        centerTitle: true,
+      ),
+      resizeToAvoidBottomInset: false,
       body: _load
           ? const Center(
               child: CircularProgressIndicator(),

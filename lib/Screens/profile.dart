@@ -131,7 +131,7 @@ class _ProfileState extends State<Profile> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             // colors: [Color.fromARGB(255, 0, 41, 226), Color(0xff000000)],
-            colors: [Color.fromARGB(255, 255, 169, 0), Color(0xff000000)],
+            colors: [Color.fromARGB(255, 255, 169, 0), Color.fromARGB(255, 255, 206, 109)],
           ),
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(8.0),

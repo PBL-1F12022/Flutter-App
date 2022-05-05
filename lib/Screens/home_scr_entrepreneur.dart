@@ -85,18 +85,28 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
         onRefresh: () async {
           await getProjectsList();
         },
-        child: ListView.builder(
-          itemCount: projects.length,
-          itemBuilder: (context, index) => EnterProfileCard(
-            askingPrice: projects[index].askingPrice,
-            description: projects[index].description,
-            equity: projects[index].equity,
-            id: projects[index].id,
-            owner: projects[index].ownerName,
-            projName: projects[index].name,
-            sector: projects[index].sector,
-            sectorAccuracy: projects[index].sectorAccuracy,
-            userType: userType as String,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: const AssetImage("assets/images/background.jpg"),
+              fit: BoxFit.fill,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.8), BlendMode.darken),
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: projects.length,
+            itemBuilder: (context, index) => EnterProfileCard(
+              askingPrice: projects[index].askingPrice,
+              description: projects[index].description,
+              equity: projects[index].equity,
+              id: projects[index].id,
+              owner: projects[index].ownerName,
+              projName: projects[index].name,
+              sector: projects[index].sector,
+              sectorAccuracy: projects[index].sectorAccuracy,
+              userType: userType as String,
+            ),
           ),
         ),
       ),
@@ -112,6 +122,8 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
             child: Scaffold(
               body: screens[_index],
               bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                selectedItemColor: Colors.white,
                 onTap: _selectIndex,
                 items: [
                   BottomNavigationBarItem(
@@ -131,7 +143,7 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
               ),
               drawer: HomeScreenDrawer(userType as String),
               appBar: AppBar(
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromARGB(255, 255, 169, 0),
                 automaticallyImplyLeading: _index == 0 ? true : false,
                 centerTitle: true,
                 titleSpacing: 0,

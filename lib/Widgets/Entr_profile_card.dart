@@ -96,6 +96,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),
+              color: Color.fromARGB(32, 255, 255, 255),
               elevation: 10,
               child: Container(
                 padding: EdgeInsets.all(10),
@@ -253,6 +254,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
       percent: widget.equity,
       fillColor: Theme.of(context).colorScheme.onSecondary,
       lineWidth: 45,
+      // backgroundColor: Color.fromARGB(32, 255, 255, 255),
     );
   }
 

@@ -84,30 +84,40 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
     final width = mediaQuery.width;
     final height = mediaQuery.height;
     final List screens = [
-      RefreshIndicator(
-        onRefresh: () async {
-          await getProjectsList();
-        },
-        child: ListView.builder(
-          itemCount: projects.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return InvestDialog(id: projects[index].id);
-                  });
-            },
-            child: EnterProfileCard(
-              askingPrice: projects[index].askingPrice,
-              description: projects[index].description,
-              equity: projects[index].equity,
-              id: projects[index].id,
-              owner: projects[index].ownerName,
-              projName: projects[index].name,
-              sector: projects[index].sector,
-              sectorAccuracy: projects[index].sectorAccuracy,
-              userType: userType as String,
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.fill,
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.8), BlendMode.darken),
+          ),
+        ),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await getProjectsList();
+          },
+          child: ListView.builder(
+            itemCount: projects.length,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return InvestDialog(id: projects[index].id);
+                    });
+              },
+              child: EnterProfileCard(
+                askingPrice: projects[index].askingPrice,
+                description: projects[index].description,
+                equity: projects[index].equity,
+                id: projects[index].id,
+                owner: projects[index].ownerName,
+                projName: projects[index].name,
+                sector: projects[index].sector,
+                sectorAccuracy: projects[index].sectorAccuracy,
+                userType: userType as String,
+              ),
             ),
           ),
         ),
@@ -124,6 +134,8 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
         : SafeArea(
             child: Scaffold(
               bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                selectedItemColor: Colors.white,
                 onTap: _selectIndex,
                 items: [
                   BottomNavigationBarItem(
@@ -148,7 +160,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
               //   isToShow: _index == 0 ? true : false,
               // ),
               appBar: AppBar(
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromARGB(255, 255, 169, 0),
                 automaticallyImplyLeading: _index == 0 ? true : false,
                 centerTitle: true,
                 titleSpacing: 0,
@@ -210,7 +222,7 @@ class InvestDialog extends StatelessWidget {
                     Text(
                       "Investment",
                       style: TextStyle(
-                        color: Color(0xffe20000),
+                        color: Color.fromARGB(255, 255, 169, 0),
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
                         fontFamily: 'Rajdhani',
@@ -246,7 +258,7 @@ class InvestDialog extends StatelessWidget {
                       width: deviceHeight * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(11),
-                        color: const Color(0xffe20000),
+                        color: const Color.fromARGB(255, 255, 169, 0),
                       ),
                       child: const Text(
                         "Cancel",
@@ -268,7 +280,7 @@ class InvestDialog extends StatelessWidget {
                       width: deviceHeight * 0.15,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(11),
-                        color: const Color(0xffe20000),
+                        color: const Color.fromARGB(255, 255, 169, 0),
                       ),
                       child: const Text(
                         "Invest",
@@ -383,7 +395,7 @@ class BuyInvestDialog extends StatelessWidget {
                     Text(
                       "Invest",
                       style: TextStyle(
-                        color: Color(0xffe20000),
+                        color: Color.fromARGB(255, 255, 169, 0),
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
                         fontFamily: 'Rajdhani',
