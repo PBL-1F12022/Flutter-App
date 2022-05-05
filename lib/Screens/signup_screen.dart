@@ -344,9 +344,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     });
                                   },
                                 ),
-                                _load
-                                    ? signupButtonLoad()
-                                    : _isLogin
+                                // _load
+                                //     ? signupButtonLoad()
+                                //     : 
+                                    _isLogin
                                         ? dropDownValue ==
                                                 _userType.Investor.name
                                             ? loginButton(
