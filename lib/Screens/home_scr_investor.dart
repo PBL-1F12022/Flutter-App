@@ -148,7 +148,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                   fontSize: 25,
                 ),
                 title:
-                    _index == 0 ? Text('Home screen') : Text('My Investments'),
+                    _index == 0 ? Text('Home Screen') : Text('My Investments'),
               ),
               body: screens[_index],
             ),

@@ -139,7 +139,7 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
                 titleTextStyle: TextStyle(
                   fontSize: 25,
                 ),
-                title: _index == 0 ? Text('Home screen') : Text('My Projects'),
+                title: _index == 0 ? Text('Home Screen') : Text('My Projects'),
               ),
             ),
           );
