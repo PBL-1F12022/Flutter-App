@@ -42,13 +42,15 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isAutoLogin = false;
   bool _isLogin = false;
   bool _isProcessing = true;
+  late final String ut;
 
   final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
     try {
       String? tokenString = await storage.read(key: 'token');
-      String? userType = await storage.read(key: 'userType');
       if (tokenString != null) {
+        String? userType = await storage.read(key: 'userType');
+        ut = userType as String;
         setState(() {
           _isAutoLogin = true;
           _isProcessing = false;
@@ -244,7 +246,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return _isProcessing
         ? Center(child: CircularProgressIndicator())
         : _isAutoLogin
-            ? HomeScreenInvestor()
+            ? (ut == 'investor')
+                ? HomeScreenInvestor()
+                : HomeScreenEntrepreneur()
             // ? MyDrawer()
             : Scaffold(
                 backgroundColor: Color(0xff292C31),

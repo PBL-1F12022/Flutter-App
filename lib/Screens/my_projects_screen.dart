@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 
@@ -69,9 +69,11 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
           // );
           print(curID);
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => InvestorDetails(id: curID)));
+            context,
+            MaterialPageRoute(
+              builder: (context) => InvestorDetails(id: curID),
+            ),
+          );
         },
         child: SizedBox(
           height: height,
@@ -82,17 +84,114 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
                   itemCount: data.length,
                   itemBuilder: (contex, index) {
                     curID = data[index]['_id'];
-                    return EnterProfileCard(
-                      askingPrice: data[index]['askingPrice'],
-                      description: data[index]['description'],
-                      equity: data[index]['equity'],
-                      id: data[index]['_id'],
-                      owner: 'You',
-                      projName: data[index]['name'],
-                      sector: data[index]['sector'],
-                      sectorAccuracy: data[index]['sectorAccuracy'],
-                      userType: 'entrepreneur',
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: AspectRatio(
+                        aspectRatio: 3 / 1.5,
+                        child: Card(
+                          elevation: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                width: width * (60 / 100),
+                                // decoration: BoxDecoration(border: Border.all()),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * (2 / 100),
+                                  vertical: height * (1 / 100),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      data[index]['name'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 27,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: height * (1 / 100)),
+                                    Text(
+                                      "Asking Price: " +
+                                          data[index]['askingPrice'].toString(),
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                    Text(
+                                      "Equity: " +
+                                          data[index]['equity']
+                                              .toStringAsFixed(2) +
+                                          "%",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                    Text(
+                                      "Sector: " + data[index]['sector'],
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                    Text(
+                                      "Sector Accuracy: " +
+                                          data[index]['sectorAccuracy']
+                                              .toStringAsFixed(3),
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                    Text(
+                                      "Investors: " +
+                                          (data[index]['investorDetails'])
+                                              .length
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.work,
+                                size: 100,
+                              ),
+                              // Image(
+                              //   image: NetworkImage(
+                              //     'https://c8.alamy.com/zooms/9/740e1ea2478b41efab9000300b84521b/r1t00k.jpg',
+                              //   ),
+                              //   fit: BoxFit.cover,
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
+                    // return EnterProfileCard(
+                    //   askingPrice: data[index]['askingPrice'],
+                    //   description: data[index]['description'],
+                    //   equity: data[index]['equity'],
+                    //   id: data[index]['_id'],
+                    //   owner: 'You',
+                    //   projName: data[index]['name'],
+                    //   sector: data[index]['sector'],
+                    //   sectorAccuracy: data[index]['sectorAccuracy'],
+                    //   userType: 'entrepreneur',
+                    // );
                   }),
         ),
       ),

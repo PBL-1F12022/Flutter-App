@@ -95,54 +95,60 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          investments[index]['project']['name'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
+                                    Container(
+                                      width: width * (60 / 100),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            investments[index]['project']
+                                                ['name'],
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        SizedBox(height: height * (1 / 100)),
-                                        Text(
-                                          "Equity:  " +
-                                              investments[index]['equity']
-                                                  .toStringAsFixed(2) +
-                                              " %",
-                                          style: TextStyle(
-                                            fontSize: 17,
+                                          SizedBox(height: height * (1 / 100)),
+                                          Text(
+                                            "Equity:  " +
+                                                investments[index]['equity']
+                                                    .toStringAsFixed(2) +
+                                                " %",
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        SizedBox(height: height * (0.3 / 100)),
-                                        Text(
-                                          "Amount: " +
-                                              investments[index]['amount']
-                                                  .toString(),
-                                          style: TextStyle(
-                                            fontSize: 17,
+                                          SizedBox(
+                                              height: height * (0.3 / 100)),
+                                          Text(
+                                            "Amount: " +
+                                                investments[index]['amount']
+                                                    .toString(),
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        SizedBox(height: height * (0.3 / 100)),
-                                        Text(
-                                          "Sector: " +
-                                              investments[index]['project']
-                                                  ['sector'],
-                                          style: TextStyle(
-                                            fontSize: 17,
+                                          SizedBox(
+                                              height: height * (0.3 / 100)),
+                                          Text(
+                                            "Sector: " +
+                                                investments[index]['project']
+                                                    ['sector'],
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     Icon(
                                       Icons.currency_rupee,
