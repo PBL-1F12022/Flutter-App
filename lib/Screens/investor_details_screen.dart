@@ -22,6 +22,7 @@ class InvestorDetails extends StatefulWidget {
 class _InvestorDetailsState extends State<InvestorDetails> {
   List data = [];
   List investors = [];
+  List finalData = [];
   bool _isLoaded = false;
   Future _getInvestors() async {
     try {
@@ -43,6 +44,7 @@ class _InvestorDetailsState extends State<InvestorDetails> {
               investors.add(map);
             }
           }
+          finalData = investors[0]['investorDetails'];
           _isLoaded = true;
         });
       } else {
@@ -76,18 +78,25 @@ class _InvestorDetailsState extends State<InvestorDetails> {
         title: Text('Investors List'),
       ),
       body: !_isLoaded
-          ? CircularProgressIndicator()
-          : ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return InvestorCard(
-                  height: height,
-                  name: investors[0]['investorDetails']['name'],
-                  amount: investors[0]['investorDetails']['amount'],
-                  equity: investors[0]['investorDetails']['equity'],
-                );
-              },
-            ),
+          ? Center(child: CircularProgressIndicator())
+          : finalData.isEmpty
+              ? Center(
+                  child: Text(
+                    'No investors yet!',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: finalData.length,
+                  itemBuilder: (context, index) {
+                    return InvestorCard(
+                      height: height,
+                      name: finalData[index]['name'],
+                      amount: finalData[index]['amount'],
+                      equity: finalData[index]['equity'],
+                    );
+                  },
+                ),
     );
   }
 }
@@ -111,15 +120,35 @@ class InvestorCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(height * (1.5 / 100)),
       child: AspectRatio(
-        aspectRatio: 3 / 1.5,
+        aspectRatio: 3 / 0.9,
         child: Card(
           elevation: 10,
-          child: Column(
-            children: [
-              Text(name),
-              Text(amount.toString()),
-              Text(equity.toString()),
-            ],
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Name: " + name,
+                  // name + " has invested",
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                Text(
+                  "Amount: " + amount.toString(),
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                Text(
+                  "Equity: " + equity.toStringAsFixed(4),
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            ),
           ),
         ),
       ),
