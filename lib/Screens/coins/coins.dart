@@ -157,220 +157,169 @@ class _CoinsState extends State<Coins> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: size.height * 0.90,
-                    height: size.width * 0.40,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 233, 197, 18),
-                          Color.fromARGB(255, 234, 229, 179),
-                        ],
-                        begin: FractionalOffset.centerLeft,
-                        end: FractionalOffset.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 253, 243, 243),
-                          offset: Offset(
-                            5.0,
-                            5.0,
-                          ),
-                          blurRadius: 3.0,
-                          spreadRadius: 0.5,
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Current Balance: ",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "₹ " + balance.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            )
-                          ]),
-                    ),
-                  ),
+          : Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage("assets/images/background.jpg"),
+                  fit: BoxFit.fill,
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.8), BlendMode.darken),
                 ),
-
-                // Buy Button Container!
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: size.height * 0.90,
-                    height: size.width * 0.40,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 77, 207, 7),
-                          Color.fromARGB(255, 155, 236, 123),
-                        ],
-                        begin: FractionalOffset.centerLeft,
-                        end: FractionalOffset.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 253, 243, 243),
-                          offset: Offset(
-                            5.0,
-                            5.0,
-                          ),
-                          blurRadius: 3.0,
-                          spreadRadius: 0.5,
-                        ),
-                      ],
-                    ),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                  const Color.fromARGB(255, 155, 236, 123),
-                                ),
-                              ),
-                              onPressed: () async {
-                                await buyCoins(context);
-                                _buyCoin.clear();
-                              },
-                              child: const Text(
-                                "Buy",
+                      width: size.height * 0.90,
+                      height: size.width * 0.30,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 255, 169, 0),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Current Balance: ",
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 50,
-                              child: TextFormField(
+                              Text(
+                                "₹ " + balance.toString(),
                                 style: const TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
                                 ),
-                                controller: _buyCoin,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  hintText: "0",
-                                  hintStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                ),
-
-                // sell button
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: size.height * 0.90,
-                    height: size.width * 0.40,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 180, 33, 23),
-                          Color.fromARGB(255, 194, 118, 101),
-                        ],
-                        begin: FractionalOffset.centerLeft,
-                        end: FractionalOffset.centerRight,
+                              )
+                            ]),
                       ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 253, 246, 243),
-                          offset: Offset(
-                            5.0,
-                            5.0,
-                          ),
-                          blurRadius: 3.0,
-                          spreadRadius: 0.5,
-                        ),
-                      ],
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                  const Color.fromARGB(255, 236, 147, 123),
+                      width: size.height * 0.90,
+                      height: size.width * 0.30,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 77, 207, 7),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    const Color.fromARGB(255, 155, 236, 123),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () async {
-                                await sellCoins(context);
-                                _sellCoin.clear();
-                              },
-                              child: const Text(
-                                "Sell",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 50,
-                              child: TextFormField(
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                                controller: _sellCoin,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  hintText: "0",
-                                  hintStyle: TextStyle(
+                                onPressed: () async {
+                                  await buyCoins(context);
+                                  _buyCoin.clear();
+                                },
+                                child: const Text(
+                                  "Buy",
+                                  style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.black,
                                   ),
-                                  border: InputBorder.none,
                                 ),
                               ),
-                            ),
-                          ]),
+                              SizedBox(
+                                width: 50,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                  controller: _buyCoin,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    hintText: "0",
+                                    hintStyle: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: size.height * 0.85,
+                      height: size.width * 0.30,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 180, 33, 23),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    const Color.fromARGB(255, 236, 147, 123),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  await sellCoins(context);
+                                  _sellCoin.clear();
+                                },
+                                child: const Text(
+                                  "Sell",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 50,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                  controller: _sellCoin,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    hintText: "0",
+                                    hintStyle: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
     );
   }
