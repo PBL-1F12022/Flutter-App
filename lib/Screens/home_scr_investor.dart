@@ -37,15 +37,15 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
       final response = await http.get(Uri.parse(getProjectsUrl));
       if (response.statusCode == 200) {
         List data = jsonDecode(response.body);
-        // print(data);
+        print(data);
         for (var project in data) {
           projects.add(ProjectIdea.fromJson(project));
         }
         setState(() {
           _load = false;
         });
-        // print(response.statusCode);
-        // print(projects);
+        print(response.statusCode);
+        print(projects);
       } else {
         Fluttertoast.showToast(
           msg: 'Projects are not currently available',
@@ -81,7 +81,9 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
   Widget build(BuildContext context) {
     final List screens = [
       RefreshIndicator(
-        onRefresh: getProjectsList,
+        onRefresh: () async {
+          await getProjectsList();
+        },
         child: ListView.builder(
           itemCount: projects.length,
           itemBuilder: (context, index) => GestureDetector(

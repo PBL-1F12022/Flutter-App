@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -17,24 +19,30 @@ class ProjectEnterScreen extends StatefulWidget {
 class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
   Future _addProject() async {
     final storage = FlutterSecureStorage();
-    final token = storage.read(key: 'Token');
+    final token = await storage.read(key: 'token');
     final url = Uri.parse(createProjectUrl);
     final data = {
       "name": _nameController.text.toString(),
       "description": _descriptionController.text.toString(),
-      "askingPrice": _askingPriceController.text,
-      "equity": _equityController.text,
+      "askingPrice": int.parse(_askingPriceController.text.trim()),
+      "equity": double.parse(_equityController.text.trim()) / 100,
     };
     final response = await http.post(
       url,
-      body: data,
+      body: jsonEncode(data),
       headers: {
-        "Authorization": "Token $token",
+        "Authorization": "Bearer $token",
         "Content-Type": "application/json",
       },
     );
     print(response.body);
     print(response.statusCode);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   final TextEditingController _nameController = TextEditingController();
@@ -51,60 +59,45 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text('Project details')),
-        body: Container(
-          height: SizeConfig.getProportionateScreenHeight(320),
-          width: SizeConfig.getProportionateScreenWidth(350),
-          // decoration: BoxDecoration(border: Border.all()),
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-            ),
-          ),
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(20),
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 200),
-          child: Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.message),
-                    label: Text('Project Name'),
-                  ),
+        body: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.message),
+                  label: Text('Project Name'),
                 ),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.text_fields),
-                    label: Text('Description'),
-                  ),
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.text_fields),
+                  label: Text('Description'),
                 ),
-                TextFormField(
-                  controller: _askingPriceController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.currency_rupee),
-                    iconColor: Colors.black,
-                    label: Text('Asking price'),
-                  ),
+              ),
+              TextFormField(
+                controller: _askingPriceController,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.currency_rupee),
+                  iconColor: Colors.black,
+                  label: Text('Asking price'),
                 ),
-                TextFormField(
-                  controller: _equityController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.percent),
-                    iconColor: Colors.black,
-                    label: Text('Equity'),
-                  ),
+              ),
+              TextFormField(
+                controller: _equityController,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.percent),
+                  iconColor: Colors.black,
+                  label: Text('Equity'),
                 ),
-                TextButton(
-                    onPressed: () {
-                      _addProject();
-                    },
-                    child: Text('Add'))
-              ],
-            ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    _addProject();
+                  },
+                  child: Text('Add'))
+            ],
           ),
         ),
       ),

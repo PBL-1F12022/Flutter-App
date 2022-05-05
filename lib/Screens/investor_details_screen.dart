@@ -23,10 +23,8 @@ class _InvestorDetailsState extends State<InvestorDetails> {
   List data = [];
   List investors = [];
   bool _isLoaded = false;
-  bool _isDone = false;
   Future _getInvestors() async {
     try {
-      // widget.id = '6272005298e797f3bf9a9418';
       final storage = FlutterSecureStorage();
       final token = await storage.read(key: 'token');
       final url = Uri.parse(getInvestorsListUrl);
@@ -46,7 +44,6 @@ class _InvestorDetailsState extends State<InvestorDetails> {
             }
           }
           _isLoaded = true;
-          _setup();
         });
       } else {
         Fluttertoast.showToast(
@@ -64,14 +61,9 @@ class _InvestorDetailsState extends State<InvestorDetails> {
 
   @override
   void initState() {
+    // print(widget.id);
     _getInvestors();
     super.initState();
-  }
-
-  Future _setup() async {
-    setState(() {
-      _isDone = true;
-    });
   }
 
   @override
@@ -88,21 +80,12 @@ class _InvestorDetailsState extends State<InvestorDetails> {
           : ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                //_setup();
-                Future.delayed(Duration.zero, () {
-                  _setup();
-                });
-
-                return !_isDone
-                    ? Card(
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                    : InvestorCard(
-                        height: height,
-                        name: investors[0]['investorDetails'][0]['name'],
-                        amount: investors[0]['investorDetails'][0]['amount'],
-                        equity: investors[0]['investorDetails'][0]['equity'],
-                      );
+                return InvestorCard(
+                  height: height,
+                  name: investors[0]['investorDetails']['name'],
+                  amount: investors[0]['investorDetails']['amount'],
+                  equity: investors[0]['investorDetails']['equity'],
+                );
               },
             ),
     );
