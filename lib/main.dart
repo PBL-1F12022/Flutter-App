@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:pbl2022_app/Screens/coins/coins.dart';
 import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AdvancedDrawerController _ctr = AdvancedDrawerController();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -42,8 +44,9 @@ class MyApp extends StatelessWidget {
       home: SignupScreen(),
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
-        HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
-        HomeScreenEntrepreneur.routeName: (context) => HomeScreenEntrepreneur(),
+        HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(_ctr),
+        HomeScreenEntrepreneur.routeName: (context) =>
+            HomeScreenEntrepreneur(_ctr),
         MyInvestmentsScreen.routeName: (context) => MyInvestmentsScreen(),
         Coins.routeName: (context) => Coins(),
         Profile.routeName: (context) => Profile(),

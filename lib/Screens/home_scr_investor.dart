@@ -3,10 +3,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
@@ -18,6 +18,8 @@ import 'package:pbl2022_app/models/project_pitch.dart';
 
 class HomeScreenInvestor extends StatefulWidget {
   static const routeName = '/home-screen/investor';
+  AdvancedDrawerController _controller;
+  HomeScreenInvestor(this._controller);
 
   @override
   State<HomeScreenInvestor> createState() => _HomeScreenInvestorState();
@@ -77,6 +79,9 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
   }
 
   int _index = 0;
+  void _handleMenuButtonPressed() {
+    widget._controller.showDrawer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +137,13 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                 ],
                 currentIndex: _index,
               ),
-              // drawer: HomeScreenDrawer(userType as String),
-              // appBar: CustomAppBar(
-              //   key: Key('App bar'),
-              //   title: _index == 0 ? 'Home screen' : 'My Investments',
-              //   isToShow: _index == 0 ? true : false,
-              // ),
               appBar: AppBar(
                 backgroundColor: Colors.black,
                 automaticallyImplyLeading: _index == 0 ? true : false,
                 centerTitle: true,
+                leading: IconButton(
+                    onPressed: _handleMenuButtonPressed,
+                    icon: Icon(Icons.menu)),
                 titleSpacing: 0,
                 elevation: 5,
                 titleTextStyle: TextStyle(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 
 import '../Screens/coins/coins.dart';
@@ -44,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
       AdvancedDrawerController();
   void _handleMenuButtonPressed() {
     // NOTICE: Manage Advanced Drawer state through the Controller.
-    _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
     _advancedDrawerController.showDrawer();
   }
 
@@ -57,6 +58,18 @@ class _MyDrawerState extends State<MyDrawer> {
   //     ),
   //   );
   // }
+  String? userType;
+  bool _isLoaded = false;
+  @override
+  void initState() {
+    () async {
+      userType = await storage.read(key: 'userType') as String;
+    };
+    super.initState();
+    setState(() {
+      _isLoaded = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,49 +79,57 @@ class _MyDrawerState extends State<MyDrawer> {
       _advancedDrawerController.showDrawer();
     }
 
-    return AdvancedDrawer(
-      controller: _advancedDrawerController,
-      child: HomeScreenInvestor(),
-      drawer: SafeArea(
-          child: Container(
-        // decoration: BoxDecoration(border: Border.all()),
-        child: ListTileTheme(
-            child: Column(
-          children: [
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed(ProjectEnterScreen.routeName);
-              },
-              title: Text('Add project'),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed(MyInvestmentsScreen.routeName);
-              },
-              title: Text('My Investments'),
-            ),
-            ListTile(
-              onTap: () {
-                //My Profile
-                Navigator.of(context).pushNamed(Profile.routeName);
-              },
-              title: Text('My Profile'),
-            ),
-            ListTile(
-              onTap: () {
-                _logOut();
-              },
-              title: Text('Log Out'),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed(Coins.routeName);
-              },
-              title: Text('Coin Portal'),
-            ),
-          ],
-        )),
-      )),
-    );
+    return !_isLoaded
+        ? Center(child: CircularProgressIndicator())
+        : AdvancedDrawer(
+            controller: _advancedDrawerController,
+            child: userType == 'investor'
+                ? HomeScreenInvestor(_advancedDrawerController)
+                : HomeScreenEntrepreneur(_advancedDrawerController),
+            drawer: !_isLoaded
+                ? Center(child: CircularProgressIndicator())
+                : SafeArea(
+                    child: Container(
+                    // decoration: BoxDecoration(border: Border.all()),
+                    child: ListTileTheme(
+                        child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(ProjectEnterScreen.routeName);
+                          },
+                          title: Text('Add project'),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(MyInvestmentsScreen.routeName);
+                          },
+                          title: Text('My Investments'),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            //My Profile
+                            Navigator.of(context).pushNamed(Profile.routeName);
+                          },
+                          title: Text('My Profile'),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            _logOut();
+                          },
+                          title: Text('Log Out'),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(Coins.routeName);
+                          },
+                          title: Text('Coin Portal'),
+                        ),
+                      ],
+                    )),
+                  )),
+          );
   }
 }

@@ -3,13 +3,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
+import 'package:pbl2022_app/Widgets/adv_drawer.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import '../constants/urls.dart';
 
@@ -235,7 +236,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  // AdvancedDrawerController _controller = AdvancedDrawerController();
+  AdvancedDrawerController _controller = AdvancedDrawerController();
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -246,12 +247,12 @@ class _SignupScreenState extends State<SignupScreen> {
     late final height = mediaQuery.size.height;
     return _isProcessing
         ? Center(child: CircularProgressIndicator())
-        : _isAutoLogin
-            ? (ut == 'investor')
-                ? HomeScreenInvestor()
-                : HomeScreenEntrepreneur()
-            // ? MyDrawer()
-            : Scaffold(
+        : !_isAutoLogin
+            ?
+            // ? (ut == 'investor')
+            //     ? HomeScreenInvestor(_controller)
+            //     : HomeScreenEntrepreneur(_controller)
+            Scaffold(
                 backgroundColor: Color(0xff292C31),
                 body: ScrollConfiguration(
                   behavior: MyBehavior(),
@@ -413,7 +414,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-              );
+              )
+            : MyDrawer();
   }
 
   Container textComponent(
