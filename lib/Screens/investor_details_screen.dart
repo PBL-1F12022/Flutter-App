@@ -83,19 +83,32 @@ class _InvestorDetailsState extends State<InvestorDetails> {
               ? Center(
                   child: Text(
                     'No investors yet!',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23,
+                        color: Colors.white),
                   ),
                 )
-              : ListView.builder(
-                  itemCount: finalData.length,
-                  itemBuilder: (context, index) {
-                    return InvestorCard(
-                      height: height,
-                      name: finalData[index]['name'],
-                      amount: finalData[index]['amount'],
-                      equity: finalData[index]['equity'],
-                    );
-                  },
+              : Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: const AssetImage("assets/images/background.jpg"),
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.8), BlendMode.darken),
+                    ),
+                  ),
+                  child: ListView.builder(
+                    itemCount: finalData.length,
+                    itemBuilder: (context, index) {
+                      return InvestorCard(
+                        height: height,
+                        name: finalData[index]['name'],
+                        amount: finalData[index]['amount'],
+                        equity: finalData[index]['equity'],
+                      );
+                    },
+                  ),
                 ),
     );
   }
@@ -122,6 +135,7 @@ class InvestorCard extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 3 / 0.9,
         child: Card(
+          color: Color.fromARGB(32, 255, 255, 255),
           elevation: 10,
           child: Container(
             padding: EdgeInsets.all(10),
@@ -131,19 +145,28 @@ class InvestorCard extends StatelessWidget {
                 Text(
                   "Name: " + name,
                   // name + " has invested",
-                  style: TextStyle(fontSize: 20, color: Colors.black),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
                 Text(
                   "Amount: " + amount.toString(),
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
                 Text(
                   "Equity: " + equity.toStringAsFixed(4),
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
