@@ -66,6 +66,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future loginUser(int index) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
@@ -97,6 +100,9 @@ class _SignupScreenState extends State<SignupScreen> {
               .pushReplacementNamed(HomeScreenEntrepreneur.routeName);
         }
       } else {
+        setState(() {
+          _load = false;
+        });
         Fluttertoast.showToast(
           msg: 'Invalid credentials',
           backgroundColor: Colors.red.shade600,
@@ -112,6 +118,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpInvestor(BuildContext context) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -167,6 +176,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpEntrepreneur(BuildContext context) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -344,10 +356,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                     });
                                   },
                                 ),
-                                // _load
-                                //     ? signupButtonLoad()
-                                //     : 
-                                    _isLogin
+                                _load
+                                    ? signupButtonLoad()
+                                    : _isLogin
                                         ? dropDownValue ==
                                                 _userType.Investor.name
                                             ? loginButton(
