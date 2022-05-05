@@ -10,6 +10,7 @@ import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
+import 'package:pbl2022_app/Widgets/appbar.dart';
 import 'package:pbl2022_app/Widgets/drawer.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
@@ -79,6 +80,9 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
+    final width = mediaQuery.width;
+    final height = mediaQuery.height;
     final List screens = [
       RefreshIndicator(
         onRefresh: () async {
@@ -129,12 +133,22 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                 currentIndex: _index,
               ),
               drawer: HomeScreenDrawer(userType as String),
+              // appBar: CustomAppBar(
+              //   key: Key('App bar'),
+              //   title: _index == 0 ? 'Home screen' : 'My Investments',
+              //   isToShow: _index == 0 ? true : false,
+              // ),
               appBar: AppBar(
-                title: _index == 0
-                    ? Text('Home screen')
-                    : userType == 'investor'
-                        ? Text('My Investments')
-                        : Text('My Projects'),
+                backgroundColor: Colors.black,
+                automaticallyImplyLeading: _index == 0 ? true : false,
+                centerTitle: true,
+                titleSpacing: 0,
+                elevation: 5,
+                titleTextStyle: TextStyle(
+                  fontSize: 25,
+                ),
+                title:
+                    _index == 0 ? Text('Home screen') : Text('My Investments'),
               ),
               body: screens[_index],
             ),

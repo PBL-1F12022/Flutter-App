@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Widgets/appbar.dart';
 
 import '../constants/urls.dart';
 
@@ -87,6 +88,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: CustomAppBar(title: 'My Profile'),
         body: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(

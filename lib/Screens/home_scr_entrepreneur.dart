@@ -128,11 +128,16 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
               ),
               drawer: HomeScreenDrawer(userType as String),
               appBar: AppBar(
-                title: _index == 0
-                    ? Text('Home screen')
-                    : userType == 'investor'
-                        ? Text('My Investments')
-                        : Text('My Projects'),
+                backgroundColor: Colors.black,
+                automaticallyImplyLeading: _index == 0 ? true : false,
+                centerTitle: true,
+                titleSpacing: 0,
+                elevation: 5,
+                leadingWidth: 40,
+                titleTextStyle: TextStyle(
+                  fontSize: 25,
+                ),
+                title: _index == 0 ? Text('Home screen') : Text('My Projects'),
               ),
               body: screens[_index],
             ),
