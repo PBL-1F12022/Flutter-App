@@ -10,10 +10,12 @@ import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
-import 'package:pbl2022_app/Widgets/drawer.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 import 'package:pbl2022_app/models/project_pitch.dart';
+
+import '../Widgets/drawer_widget.dart';
+import '../advance_drawer/flutter_advanced_drawer.dart';
 
 class HomeScreenEntrepreneur extends StatefulWidget {
   static const routeName = '/home-screen/entrepreneur';
@@ -76,6 +78,8 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
     });
   }
 
+  final _advancedDrawerController = AdvancedDrawerController();
+
   int _index = 0;
 
   @override
@@ -118,42 +122,76 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SafeArea(
-            child: Scaffold(
-              body: screens[_index],
-              bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: Color.fromARGB(255, 255, 169, 0),
-                selectedItemColor: Colors.white,
-                onTap: _selectIndex,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'All Projects',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: userType == 'investor'
-                        ? Icon(Icons.money_rounded)
-                        : Icon(Icons.work),
-                    label: userType == 'investor'
-                        ? 'My Investments'
-                        : 'My Projects',
-                  ),
-                ],
-                currentIndex: _index,
-              ),
-              drawer: HomeScreenDrawer(userType as String),
-              appBar: AppBar(
-                backgroundColor: Color.fromARGB(255, 255, 169, 0),
-                automaticallyImplyLeading: _index == 0 ? true : false,
-                centerTitle: true,
-                titleSpacing: 0,
-                elevation: 5,
-                titleTextStyle: TextStyle(
-                  fontSize: 25,
+        : AdvancedDrawer(
+            backdropColor: const Color(0xff01020a),
+            controller: _advancedDrawerController,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 300),
+            animateChildDecoration: true,
+            rtlOpening: false,
+            disabledGestures: false,
+            childDecoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+            child: SafeArea(
+              child: Scaffold(
+                body: screens[_index],
+                bottomNavigationBar: BottomNavigationBar(
+                  backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                  selectedItemColor: Colors.white,
+                  onTap: _selectIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'All Projects',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: userType == 'investor'
+                          ? Icon(Icons.money_rounded)
+                          : Icon(Icons.work),
+                      label: userType == 'investor'
+                          ? 'My Investments'
+                          : 'My Projects',
+                    ),
+                  ],
+                  currentIndex: _index,
                 ),
-                title: _index == 0 ? Text('Home Screen') : Text('My Projects'),
+                appBar: AppBar(
+                  backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                  automaticallyImplyLeading: _index == 0 ? true : false,
+                  centerTitle: true,
+                  titleSpacing: 0,
+                  elevation: 5,
+                  titleTextStyle: TextStyle(
+                    fontSize: 25,
+                  ),
+                  title:
+                      _index == 0 ? Text('Home Screen') : Text('My Projects'),
+                  leading: IconButton(
+                    onPressed: _handleMenuButtonPressed,
+                    icon: ValueListenableBuilder<AdvancedDrawerValue>(
+                      valueListenable: _advancedDrawerController,
+                      builder: (_, value, __) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: Icon(
+                            value.visible ? Icons.clear : Icons.menu,
+                            key: ValueKey<bool>(value.visible),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
+            drawer: DrawerWidget(userType: userType as String),
           );
+  }
+
+  void _handleMenuButtonPressed() {
+    // NOTICE: Manage Advanced Drawer state through the Controller.
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    _advancedDrawerController.showDrawer();
   }
 }

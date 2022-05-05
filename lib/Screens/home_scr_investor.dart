@@ -11,10 +11,12 @@ import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 import 'package:pbl2022_app/Widgets/appbar.dart';
-import 'package:pbl2022_app/Widgets/drawer.dart';
+import 'package:pbl2022_app/Widgets/drawer_widget.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 import 'package:pbl2022_app/models/project_pitch.dart';
+
+import '../advance_drawer/flutter_advanced_drawer.dart';
 
 class HomeScreenInvestor extends StatefulWidget {
   static const routeName = '/home-screen/investor';
@@ -78,6 +80,8 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
   int _index = 0;
 
+  final _advancedDrawerController = AdvancedDrawerController();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -131,49 +135,84 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SafeArea(
-            child: Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: Color.fromARGB(255, 255, 169, 0),
-                selectedItemColor: Colors.white,
-                onTap: _selectIndex,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'All Projects',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: userType == 'investor'
-                        ? Icon(Icons.money_rounded)
-                        : Icon(Icons.work),
-                    label: userType == 'investor'
-                        ? 'My Investments'
-                        : 'My Projects',
-                  ),
-                ],
-                currentIndex: _index,
-              ),
-              drawer: HomeScreenDrawer(userType as String),
-              // appBar: CustomAppBar(
-              //   key: Key('App bar'),
-              //   title: _index == 0 ? 'Home screen' : 'My Investments',
-              //   isToShow: _index == 0 ? true : false,
-              // ),
-              appBar: AppBar(
-                backgroundColor: Color.fromARGB(255, 255, 169, 0),
-                automaticallyImplyLeading: _index == 0 ? true : false,
-                centerTitle: true,
-                titleSpacing: 0,
-                elevation: 5,
-                titleTextStyle: TextStyle(
-                  fontSize: 25,
-                ),
-                title:
-                    _index == 0 ? Text('Home Screen') : Text('My Investments'),
-              ),
-              body: screens[_index],
+        : AdvancedDrawer(
+            backdropColor: const Color(0xff01020a),
+            controller: _advancedDrawerController,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 300),
+            animateChildDecoration: true,
+            rtlOpening: false,
+            disabledGestures: false,
+            childDecoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
+            child: SafeArea(
+              child: Scaffold(
+                bottomNavigationBar: BottomNavigationBar(
+                  backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                  selectedItemColor: Colors.white,
+                  onTap: _selectIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'All Projects',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: userType == 'investor'
+                          ? Icon(Icons.money_rounded)
+                          : Icon(Icons.work),
+                      label: userType == 'investor'
+                          ? 'My Investments'
+                          : 'My Projects',
+                    ),
+                  ],
+                  currentIndex: _index,
+                ),
+                // drawer: HomeScreenDrawer(userType as String),
+                // appBar: CustomAppBar(
+                //   key: Key('App bar'),
+                //   title: _index == 0 ? 'Home screen' : 'My Investments',
+                //   isToShow: _index == 0 ? true : false,
+                // ),
+                appBar: AppBar(
+                  backgroundColor: Color.fromARGB(255, 255, 169, 0),
+                  automaticallyImplyLeading: _index == 0 ? true : false,
+                  centerTitle: true,
+                  titleSpacing: 0,
+                  elevation: 5,
+                  titleTextStyle: TextStyle(
+                    fontSize: 25,
+                  ),
+                  title: _index == 0
+                      ? Text('Home Screen')
+                      : Text('My Investments'),
+                  leading: IconButton(
+                    onPressed: _handleMenuButtonPressed,
+                    icon: ValueListenableBuilder<AdvancedDrawerValue>(
+                      valueListenable: _advancedDrawerController,
+                      builder: (_, value, __) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: Icon(
+                            value.visible ? Icons.clear : Icons.menu,
+                            key: ValueKey<bool>(value.visible),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                body: screens[_index],
+              ),
+            ),
+            drawer: DrawerWidget(userType: userType as String),
           );
+  }
+
+  void _handleMenuButtonPressed() {
+    // NOTICE: Manage Advanced Drawer state through the Controller.
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    _advancedDrawerController.showDrawer();
   }
 }
 
