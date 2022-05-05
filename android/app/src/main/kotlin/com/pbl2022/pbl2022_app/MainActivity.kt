@@ -1,4 +1,4 @@
-package com.pbl2022.pbl2022_app
+package com.pbl2022.pitchnfund
 
 import io.flutter.embedding.android.FlutterActivity
 
