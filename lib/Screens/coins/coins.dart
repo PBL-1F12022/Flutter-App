@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Widgets/appbar.dart';
 
 import '../../constants/urls.dart';
 
@@ -27,6 +26,7 @@ class _CoinsState extends State<Coins> {
 
   bool _load = true;
   late final type;
+
   Future getBalance() async {
     try {
       final String? type = await storage.read(key: 'userType');

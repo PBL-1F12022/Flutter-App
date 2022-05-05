@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:pbl2022_app/constants/urls.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class InvestorDetails extends StatefulWidget {
   String id;
+
   InvestorDetails({Key? key, required this.id}) : super(key: key);
   static const routeName = '/investor_details_screen';
 
@@ -24,6 +23,7 @@ class _InvestorDetailsState extends State<InvestorDetails> {
   List investors = [];
   List finalData = [];
   bool _isLoaded = false;
+
   Future _getInvestors() async {
     try {
       final storage = FlutterSecureStorage();

@@ -6,11 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
 import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
-import 'package:pbl2022_app/Widgets/appbar.dart';
 import 'package:pbl2022_app/Widgets/drawer_widget.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
@@ -218,6 +216,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
 class InvestDialog extends StatelessWidget {
   final String id;
+
   const InvestDialog({required this.id});
 
   @override
@@ -349,7 +348,9 @@ class InvestDialog extends StatelessWidget {
 
 class BuyInvestDialog extends StatelessWidget {
   final String id;
+
   BuyInvestDialog({required this.id});
+
   final storage = const FlutterSecureStorage();
   final TextEditingController _buyCoin = TextEditingController();
 

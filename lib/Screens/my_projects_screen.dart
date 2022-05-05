@@ -7,7 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Screens/investor_details_screen.dart';
-import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 
 class MyProjectsScreen extends StatefulWidget {
@@ -21,6 +20,7 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
   List data = [];
   bool _isLoaded = false;
   String curID = '';
+
   Future _getMyProjects() async {
     try {
       final storage = FlutterSecureStorage();

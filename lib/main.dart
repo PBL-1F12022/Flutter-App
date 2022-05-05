@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -27,9 +28,12 @@ class MyApp extends StatelessWidget {
         ),
         // primarySwatch: Color.fromARGB(255, 255, 169, 0),
         textTheme: TextTheme(
-          headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 26, color: Colors.white),
-          headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 22, color: Colors.white),
-          headline3: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white),
+          headline1: TextStyle(
+              fontWeight: FontWeight.w900, fontSize: 26, color: Colors.white),
+          headline2: TextStyle(
+              fontWeight: FontWeight.w600, fontSize: 22, color: Colors.white),
+          headline3: TextStyle(
+              fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white),
           bodyText1: TextStyle(
             fontSize: 20,
           ),

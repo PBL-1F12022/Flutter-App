@@ -11,6 +11,7 @@ import '../constants/urls.dart';
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
   static const routeName = '/profile';
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -21,6 +22,7 @@ class _ProfileState extends State<Profile> {
   // bool _passwordVisible;
   bool _load = true;
   final storage = const FlutterSecureStorage();
+
   // TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -131,7 +133,10 @@ class _ProfileState extends State<Profile> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             // colors: [Color.fromARGB(255, 0, 41, 226), Color(0xff000000)],
-            colors: [Color.fromARGB(255, 255, 169, 0), Color.fromARGB(255, 255, 206, 109)],
+            colors: [
+              Color.fromARGB(255, 255, 169, 0),
+              Color.fromARGB(255, 255, 206, 109)
+            ],
           ),
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(8.0),

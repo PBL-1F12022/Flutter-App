@@ -9,6 +9,7 @@ import '../Screens/signup_screen.dart';
 
 class DrawerWidget extends StatefulWidget {
   final String userType;
+
   const DrawerWidget({
     Key? key,
     required this.userType,

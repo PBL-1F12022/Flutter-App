@@ -5,14 +5,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Screens/signup_screen.dart';
-import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
-
 import 'package:pbl2022_app/constants/urls.dart';
 
 class MyInvestmentsScreen extends StatefulWidget {
   const MyInvestmentsScreen({Key? key}) : super(key: key);
   static const routeName = '/my_investments_screen';
+
   @override
   State<MyInvestmentsScreen> createState() => _MyInvestmentsScreenState();
 }
@@ -21,6 +19,7 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
   bool _isFetched = false;
   List investments = [];
   String? userType;
+
   Future _getMyInvestments() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
@@ -101,10 +100,9 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                               investments[index]['project']
                                                   ['name'],
                                               style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.white
-                                              ),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                  color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             ),
@@ -116,9 +114,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                                       .toStringAsFixed(2) +
                                                   " %",
                                               style: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.white
-                                              ),
+                                                  fontSize: 17,
+                                                  color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             ),
@@ -129,9 +126,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                                   investments[index]['amount']
                                                       .toString(),
                                               style: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.white
-                                              ),
+                                                  fontSize: 17,
+                                                  color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             ),
@@ -142,20 +138,16 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                                   investments[index]['project']
                                                       ['sector'],
                                               style: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.white
-                                              ),
+                                                  fontSize: 17,
+                                                  color: Colors.white),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.currency_rupee,
-                                        size: 60,
-                                        color: Colors.white
-                                      ),
+                                      Icon(Icons.currency_rupee,
+                                          size: 60, color: Colors.white),
                                     ],
                                   ),
                                 ),

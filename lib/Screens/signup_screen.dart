@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbl2022_app/Screens/drawers.dart';
 import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
-
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
+
 import '../constants/urls.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -21,6 +20,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 enum _userType { Investor, Entrepreneur }
+
 String dropDownValue = 'Investor';
 String tokenString = "";
 
@@ -45,6 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
   late final String ut;
 
   final storage = FlutterSecureStorage();
+
   Future isUserLoggedIn() async {
     try {
       String? tokenString = await storage.read(key: 'token');
