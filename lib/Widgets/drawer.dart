@@ -18,8 +18,8 @@ class HomeScreenDrawer extends StatefulWidget {
 }
 
 class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
+  final storage = FlutterSecureStorage();
   Future _logOut() async {
-    final storage = FlutterSecureStorage();
     await storage.deleteAll();
     // final str = await storage.read(key: 'userType');
     while (Navigator.of(context).canPop()) {
@@ -30,17 +30,22 @@ class _HomeScreenDrawerState extends State<HomeScreenDrawer> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Flutter App')),
       body: Column(
         children: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(ProjectEnterScreen.routeName);
-            },
-            child: Text('Add project'),
-          ),
+          if (widget.userType == 'entrepreneur')
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(ProjectEnterScreen.routeName);
+              },
+              child: Text('Add project'),
+            ),
           if (widget.userType == 'investor')
             TextButton(
               onPressed: () {

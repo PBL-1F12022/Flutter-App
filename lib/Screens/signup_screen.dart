@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Screens/drawers.dart';
+import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -41,13 +42,15 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isAutoLogin = false;
   bool _isLogin = false;
   bool _isProcessing = true;
+  late final String ut;
 
   final storage = FlutterSecureStorage();
   Future isUserLoggedIn() async {
     try {
       String? tokenString = await storage.read(key: 'token');
-      String? userType = await storage.read(key: 'userType');
       if (tokenString != null) {
+        String? userType = await storage.read(key: 'userType');
+        ut = userType as String;
         setState(() {
           _isAutoLogin = true;
           _isProcessing = false;
@@ -65,6 +68,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future loginUser(int index) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
@@ -88,9 +94,17 @@ class _SignupScreenState extends State<SignupScreen> {
           key: 'userType',
           value: index == 0 ? 'investor' : 'entrepreneur',
         );
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenInvestor.routeName);
+        if (index == 0) {
+          Navigator.of(context)
+              .pushReplacementNamed(HomeScreenInvestor.routeName);
+        } else {
+          Navigator.of(context)
+              .pushReplacementNamed(HomeScreenEntrepreneur.routeName);
+        }
       } else {
+        setState(() {
+          _load = false;
+        });
         Fluttertoast.showToast(
           msg: 'Invalid credentials',
           backgroundColor: Colors.red.shade600,
@@ -106,6 +120,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpInvestor(BuildContext context) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -161,6 +178,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUpEntrepreneur(BuildContext context) async {
     try {
+      setState(() {
+        _load = true;
+      });
       Map data = {
         "name": _nameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -194,7 +214,7 @@ class _SignupScreenState extends State<SignupScreen> {
         await storage.write(key: 'userType', value: 'entrepreneur');
 
         Navigator.of(context)
-            .pushReplacementNamed(HomeScreenInvestor.routeName);
+            .pushReplacementNamed(HomeScreenEntrepreneur.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',
@@ -226,7 +246,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return _isProcessing
         ? Center(child: CircularProgressIndicator())
         : _isAutoLogin
-            ? HomeScreenInvestor()
+            ? (ut == 'investor')
+                ? HomeScreenInvestor()
+                : HomeScreenEntrepreneur()
             // ? MyDrawer()
             : Scaffold(
                 backgroundColor: Color(0xff292C31),

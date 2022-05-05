@@ -15,14 +15,14 @@ import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 import 'package:pbl2022_app/models/project_pitch.dart';
 
-class HomeScreenInvestor extends StatefulWidget {
+class HomeScreenEntrepreneur extends StatefulWidget {
   static const routeName = '/home-screen/entrepreneur';
 
   @override
-  State<HomeScreenInvestor> createState() => _HomeScreenInvestorState();
+  State<HomeScreenEntrepreneur> createState() => _HomeScreenEntrepreneurState();
 }
 
-class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
+class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
   String? userType;
   bool _load = true;
   List<ProjectIdea> projects = [];
@@ -65,6 +65,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
     // storage.deleteAll();
     // Future.delayed(Duration.zero, () {});
     // loadUserType();
+    print('Home screen called');
     getProjectsList();
     super.initState();
   }
@@ -81,7 +82,9 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
   Widget build(BuildContext context) {
     final List screens = [
       RefreshIndicator(
-        onRefresh: getProjectsList,
+        onRefresh: () async {
+          await getProjectsList();
+        },
         child: ListView.builder(
           itemCount: projects.length,
           itemBuilder: (context, index) => EnterProfileCard(
@@ -97,8 +100,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
           ),
         ),
       ),
-      if (userType == 'investor') MyInvestmentsScreen(),
-      if (userType == 'entrepreneur') MyProjectsScreen(),
+      MyProjectsScreen(),
     ];
 
     SizeConfig.init(context);
@@ -108,6 +110,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
           )
         : SafeArea(
             child: Scaffold(
+              body: screens[_index],
               bottomNavigationBar: BottomNavigationBar(
                 onTap: _selectIndex,
                 items: [
@@ -128,13 +131,16 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
               ),
               drawer: HomeScreenDrawer(userType as String),
               appBar: AppBar(
-                title: _index == 0
-                    ? Text('Home screen')
-                    : userType == 'investor'
-                        ? Text('My Investments')
-                        : Text('My Projects'),
+                backgroundColor: Colors.black,
+                automaticallyImplyLeading: _index == 0 ? true : false,
+                centerTitle: true,
+                titleSpacing: 0,
+                elevation: 5,
+                titleTextStyle: TextStyle(
+                  fontSize: 25,
+                ),
+                title: _index == 0 ? Text('Home Screen') : Text('My Projects'),
               ),
-              body: screens[_index],
             ),
           );
   }

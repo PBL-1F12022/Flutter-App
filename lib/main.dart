@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pbl2022_app/Screens/coins/coins.dart';
+import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/Screens/investor_details_screen.dart';
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
       routes: {
         ProjectEnterScreen.routeName: (context) => ProjectEnterScreen(),
         HomeScreenInvestor.routeName: (context) => HomeScreenInvestor(),
+        HomeScreenEntrepreneur.routeName: (context) => HomeScreenEntrepreneur(),
         MyInvestmentsScreen.routeName: (context) => MyInvestmentsScreen(),
         Coins.routeName: (context) => Coins(),
         Profile.routeName: (context) => Profile(),
