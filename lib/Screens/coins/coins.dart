@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbl2022_app/Widgets/appbar.dart';
 
 import '../../constants/urls.dart';
 
@@ -149,10 +150,7 @@ class _CoinsState extends State<Coins> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Coin Portal"),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(title: 'Coin Portal'),
       body: _load
           ? const Center(
               child: CircularProgressIndicator(),

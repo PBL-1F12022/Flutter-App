@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pbl2022_app/Widgets/appbar.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 import 'package:http/http.dart' as http;
@@ -58,7 +59,7 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
     SizeConfig.init(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Project details')),
+        appBar: CustomAppBar(title: 'Add Project'),
         body: Form(
           child: Column(
             children: [
