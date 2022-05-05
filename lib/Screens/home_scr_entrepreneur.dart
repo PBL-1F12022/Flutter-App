@@ -77,6 +77,11 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
   }
 
   int _index = 0;
+  // AdvancedDrawerController _advancedDrawerController =
+  //     AdvancedDrawerController();
+  // void _handleMenuButtonPressed() {
+  //   widget.advancedDrawerController.showDrawer();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +134,11 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
                 ],
                 currentIndex: _index,
               ),
-              drawer: HomeScreenDrawer(userType as String),
+              // drawer: HomeScreenDrawer(userType as String),
               appBar: AppBar(
                 backgroundColor: Colors.black,
                 automaticallyImplyLeading: _index == 0 ? true : false,
+                // leading: ,
                 centerTitle: true,
                 titleSpacing: 0,
                 elevation: 5,

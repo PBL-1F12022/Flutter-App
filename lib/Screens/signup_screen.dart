@@ -235,6 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  // AdvancedDrawerController _controller = AdvancedDrawerController();
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);

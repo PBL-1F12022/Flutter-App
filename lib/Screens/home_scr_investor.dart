@@ -132,7 +132,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
                 ],
                 currentIndex: _index,
               ),
-              drawer: HomeScreenDrawer(userType as String),
+              // drawer: HomeScreenDrawer(userType as String),
               // appBar: CustomAppBar(
               //   key: Key('App bar'),
               //   title: _index == 0 ? 'Home screen' : 'My Investments',
