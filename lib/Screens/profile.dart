@@ -128,7 +128,8 @@ class _ProfileState extends State<Profile> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color.fromARGB(255, 0, 41, 226), Color(0xff000000)],
+            // colors: [Color.fromARGB(255, 0, 41, 226), Color(0xff000000)],
+            colors: [Color.fromARGB(255, 255, 169, 0), Color(0xff000000)],
           ),
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(8.0),
@@ -210,7 +211,7 @@ class _ProfileState extends State<Profile> {
                   isDense: true,
                   labelText: 'Username',
                   labelStyle: const TextStyle(
-                    color: Color.fromARGB(255, 0, 26, 226),
+                    color: Color.fromARGB(255, 255, 169, 0),
                   ),
                   disabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
@@ -241,7 +242,7 @@ class _ProfileState extends State<Profile> {
                   isDense: true,
                   labelText: 'Email',
                   labelStyle: const TextStyle(
-                    color: Color.fromARGB(255, 0, 26, 226),
+                    color: Color.fromARGB(255, 255, 169, 0),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -269,7 +270,7 @@ class _ProfileState extends State<Profile> {
                   isDense: true,
                   labelText: 'Phone number',
                   labelStyle: const TextStyle(
-                    color: Color.fromARGB(255, 0, 26, 226),
+                    color: Color.fromARGB(255, 255, 169, 0),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -296,7 +297,7 @@ class _ProfileState extends State<Profile> {
                   isDense: true,
                   labelText: 'Coins',
                   labelStyle: const TextStyle(
-                    color: Color.fromARGB(255, 0, 26, 226),
+                    color: Color.fromARGB(255, 255, 169, 0),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
