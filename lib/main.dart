@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Color.fromARGB(255, 255, 169, 0),
+        ),
+        // primarySwatch: Color.fromARGB(255, 255, 169, 0),
         textTheme: TextTheme(
           headline1: TextStyle(fontWeight: FontWeight.w900, fontSize: 26),
           headline2: TextStyle(fontWeight: FontWeight.w600, fontSize: 22),

@@ -59,45 +59,87 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
     SizeConfig.init(context);
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(title: 'Add Project'),
-        body: Form(
-          child: Column(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(title: Text('Project details')),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: const AssetImage("assets/images/background.jpg"),
+              fit: BoxFit.fill,
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.225), BlendMode.dstIn),
+            ),
+          ),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
             children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.message),
-                  label: Text('Project Name'),
+              Positioned(
+                top: 80,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2.0,
+                      color: Color.fromARGB(255, 255, 169, 0),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            cursorColor: Color.fromARGB(255, 255, 169, 0),
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.message),
+                              label: Text(
+                                'Project Name',
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: _descriptionController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.text_fields),
+                              label: Text('Description'),
+                            ),
+                            maxLines: 4,
+                          ),
+                          TextFormField(
+                            controller: _askingPriceController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.currency_rupee),
+                              label: Text('Asking price'),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: _equityController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.percent),
+                              label: Text('Equity'),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color.fromARGB(255, 255, 169, 0),
+                            ),
+                            onPressed: () {
+                              _addProject();
+                            },
+                            child: Text('Add'),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.text_fields),
-                  label: Text('Description'),
-                ),
-              ),
-              TextFormField(
-                controller: _askingPriceController,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.currency_rupee),
-                  iconColor: Colors.black,
-                  label: Text('Asking price'),
-                ),
-              ),
-              TextFormField(
-                controller: _equityController,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.percent),
-                  iconColor: Colors.black,
-                  label: Text('Equity'),
-                ),
-              ),
-              TextButton(
-                  onPressed: () {
-                    _addProject();
-                  },
-                  child: Text('Add'))
             ],
           ),
         ),
