@@ -79,16 +79,23 @@ class _SignupScreenState extends State<SignupScreen> {
           "Content-Type": "application/json",
         },
       );
-      // print(response.body);
-      // print(response.statusCode);
+      print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         await storage.write(key: 'token', value: result['token']);
         await storage.write(
-            key: 'userType', value: index == 0 ? 'investor' : 'entrepreneur');
+          key: 'userType',
+          value: index == 0 ? 'investor' : 'entrepreneur',
+        );
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenInvestor.routeName);
-      } else {}
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Invalid credentials',
+          backgroundColor: Colors.red.shade600,
+        );
+      }
     } catch (e) {
       Fluttertoast.showToast(
         msg: 'Something went wrong! Try again later',

@@ -82,9 +82,9 @@ class _InvestorDetailsState extends State<InvestorDetails> {
               itemBuilder: (context, index) {
                 return InvestorCard(
                   height: height,
-                  name: investors[0]['investorDetails'][0]['name'],
-                  amount: investors[0]['investorDetails'][0]['amount'],
-                  equity: investors[0]['investorDetails'][0]['equity'],
+                  name: investors[0]['investorDetails']['name'],
+                  amount: investors[0]['investorDetails']['amount'],
+                  equity: investors[0]['investorDetails']['equity'],
                 );
               },
             ),
