@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Screens/drawers.dart';
+import 'package:pbl2022_app/Screens/home_scr_entrepreneur.dart';
 
 import 'package:pbl2022_app/Screens/home_scr_investor.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
@@ -88,8 +89,13 @@ class _SignupScreenState extends State<SignupScreen> {
           key: 'userType',
           value: index == 0 ? 'investor' : 'entrepreneur',
         );
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenInvestor.routeName);
+        if (index == 0) {
+          Navigator.of(context)
+              .pushReplacementNamed(HomeScreenInvestor.routeName);
+        } else {
+          Navigator.of(context)
+              .pushReplacementNamed(HomeScreenEntrepreneur.routeName);
+        }
       } else {
         Fluttertoast.showToast(
           msg: 'Invalid credentials',
@@ -194,7 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
         await storage.write(key: 'userType', value: 'entrepreneur');
 
         Navigator.of(context)
-            .pushReplacementNamed(HomeScreenInvestor.routeName);
+            .pushReplacementNamed(HomeScreenEntrepreneur.routeName);
       } else {
         Fluttertoast.showToast(
           msg: 'Something went wrong! Try again later',

@@ -105,6 +105,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                           ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
                                         SizedBox(height: height * (1 / 100)),
                                         Text(
@@ -115,6 +117,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                           style: TextStyle(
                                             fontSize: 17,
                                           ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
                                         SizedBox(height: height * (0.3 / 100)),
                                         Text(
@@ -124,6 +128,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                           style: TextStyle(
                                             fontSize: 17,
                                           ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
                                         SizedBox(height: height * (0.3 / 100)),
                                         Text(
@@ -133,6 +139,8 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                           style: TextStyle(
                                             fontSize: 17,
                                           ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
                                       ],
                                     ),
