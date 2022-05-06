@@ -84,9 +84,10 @@ class _InvestorDetailsState extends State<InvestorDetails> {
                   child: Text(
                     'No investors yet!',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 23,
-                        color: Colors.white),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23,
+                      color: Colors.black,
+                    ),
                   ),
                 )
               : Container(

@@ -245,13 +245,17 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
   CircularPercentIndicator progressIndicator(
       BuildContext context, MediaQueryData mediaQuery) {
     return CircularPercentIndicator(
+      // progressColor: Color.fromARGB(0, 20, 227, 20),
+      progressColor: Colors.green[900],
       radius: mediaQuery.size.width * (18 / 100),
       center: Text(
         (widget.equity * 100).toStringAsFixed(2) + '%',
         maxLines: 1,
+        style: TextStyle(color: Colors.amber),
       ),
       percent: widget.equity,
-      fillColor: Theme.of(context).colorScheme.onSecondary,
+      // fillColor: Color(0x00228b22),
+      // fillColor: Theme.of(context).colorScheme.onSecondary,
       lineWidth: 45,
       // backgroundColor: Color.fromARGB(32, 255, 255, 255),
     );
