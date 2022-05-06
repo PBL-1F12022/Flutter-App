@@ -82,146 +82,144 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
     final theme = Theme.of(context);
     return Align(
       alignment: Alignment.center,
-      child: Expanded(
-        child: AspectRatio(
-          aspectRatio: 3 / 3,
-          child: Container(
-            margin: EdgeInsets.symmetric(
-              vertical: mediaQuery.size.height * (1 / 100),
-              horizontal: mediaQuery.size.width * (1 / 100),
+      child: AspectRatio(
+        aspectRatio: 3 / 3,
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            vertical: mediaQuery.size.height * (1 / 100),
+            horizontal: mediaQuery.size.width * (1 / 100),
+          ),
+          // decoration: BoxDecoration(border: Border.all()),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
             ),
-            // decoration: BoxDecoration(border: Border.all()),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40),
-              ),
-              color: Color.fromARGB(32, 255, 255, 255),
-              elevation: 10,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    projectText(theme, mediaQuery),
-                    Container(
-                      // decoration: BoxDecoration(border: Border.all()),
-                      width: width * (95 / 100),
-                      height: height * (20 / 100),
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            width: width * (45 / 100),
-                            // decoration: BoxDecoration(border: Border.all()),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: height * (1 / 100)),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Sector: ' + widget.sector,
-                                    style: theme.textTheme.headline2,
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                SizedBox(height: height * (1 / 100)),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    'Accuracy: ' +
-                                        widget.sectorAccuracy.toString(),
-                                    style: theme.textTheme.headline2,
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                SizedBox(height: height * (1 / 100)),
-                                askingPriceText(theme),
-                              ],
-                            ),
-                          ),
-                          progressIndicator(context, mediaQuery)
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: descriptionText(theme),
-                    ),
-                    Row(
-                      mainAxisAlignment: (widget.userType == 'investor')
-                          ? MainAxisAlignment.spaceBetween
-                          : MainAxisAlignment.end,
+            color: Color.fromARGB(32, 255, 255, 255),
+            elevation: 10,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  projectText(theme, mediaQuery),
+                  Container(
+                    // decoration: BoxDecoration(border: Border.all()),
+                    width: width * (95 / 100),
+                    height: height * (20 / 100),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        if (widget.userType == 'investor')
-                          TextButton(
-                            onPressed: _toggleBookMark,
-                            child: Text('Add bookmark'),
+                        Container(
+                          width: width * (45 / 100),
+                          // decoration: BoxDecoration(border: Border.all()),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: height * (1 / 100)),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Sector: ' + widget.sector,
+                                  style: theme.textTheme.headline2,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              SizedBox(height: height * (1 / 100)),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Accuracy: ' +
+                                      widget.sectorAccuracy.toString(),
+                                  style: theme.textTheme.headline2,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              SizedBox(height: height * (1 / 100)),
+                              askingPriceText(theme),
+                            ],
                           ),
-                        ownerText(theme),
+                        ),
+                        progressIndicator(context, mediaQuery)
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    child: descriptionText(theme),
+                  ),
+                  Row(
+                    mainAxisAlignment: (widget.userType == 'investor')
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.end,
+                    children: [
+                      if (widget.userType == 'investor')
+                        TextButton(
+                          onPressed: _toggleBookMark,
+                          child: Text('Add bookmark'),
+                        ),
+                      ownerText(theme),
+                    ],
+                  ),
+                ],
               ),
-              // child: Container(
-              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     children: [
-              //       projectText(theme, mediaQuery),
-              //       IconButton(
-              //         onPressed: () {
-              //           _toggleBookMark();
-              //         },
-              //         icon: _isBookMarked
-              //             ? Icon(
-              //                 Icons.bookmark_add,
-              //               )
-              //             : Icon(
-              //                 Icons.bookmark_add_outlined,
-              //               ),
-              //       ),
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           SizedBox(
-              //             width: mediaQuery.size.width * (40 / 100),
-              //             child: Column(
-              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //               crossAxisAlignment: CrossAxisAlignment.center,
-              //               children: [
-              //                 descriptionText(theme),
-              //                 SizedBox(
-              //                     height: mediaQuery.size.height * (2 / 100)),
-              //                 askingPriceText(theme),
-              //                 equityText(theme),
-              //               ],
-              //             ),
-              //           ),
-              //           SizedBox(width: mediaQuery.size.width * (2 / 100)),
-              //           SizedBox(
-              //             width: mediaQuery.size.width * (40 / 100),
-              //             child: Column(
-              //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //               crossAxisAlignment: CrossAxisAlignment.end,
-              //               children: [
-              //                 SizedBox(
-              //                     height: mediaQuery.size.height * (1 / 100)),
-              //                 progressIndicator(context, mediaQuery),
-              //                 SizedBox(
-              //                     height: mediaQuery.size.height * (1 / 100)),
-              //                 ownerText(theme),
-              //               ],
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ),
+            // child: Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     children: [
+            //       projectText(theme, mediaQuery),
+            //       IconButton(
+            //         onPressed: () {
+            //           _toggleBookMark();
+            //         },
+            //         icon: _isBookMarked
+            //             ? Icon(
+            //                 Icons.bookmark_add,
+            //               )
+            //             : Icon(
+            //                 Icons.bookmark_add_outlined,
+            //               ),
+            //       ),
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           SizedBox(
+            //             width: mediaQuery.size.width * (40 / 100),
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               crossAxisAlignment: CrossAxisAlignment.center,
+            //               children: [
+            //                 descriptionText(theme),
+            //                 SizedBox(
+            //                     height: mediaQuery.size.height * (2 / 100)),
+            //                 askingPriceText(theme),
+            //                 equityText(theme),
+            //               ],
+            //             ),
+            //           ),
+            //           SizedBox(width: mediaQuery.size.width * (2 / 100)),
+            //           SizedBox(
+            //             width: mediaQuery.size.width * (40 / 100),
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //               crossAxisAlignment: CrossAxisAlignment.end,
+            //               children: [
+            //                 SizedBox(
+            //                     height: mediaQuery.size.height * (1 / 100)),
+            //                 progressIndicator(context, mediaQuery),
+            //                 SizedBox(
+            //                     height: mediaQuery.size.height * (1 / 100)),
+            //                 ownerText(theme),
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ),
         ),
       ),
