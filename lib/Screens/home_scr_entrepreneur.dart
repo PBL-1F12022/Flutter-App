@@ -129,6 +129,7 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
             ),
             child: SafeArea(
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 body: screens[_index],
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: Color.fromARGB(255, 255, 169, 0),

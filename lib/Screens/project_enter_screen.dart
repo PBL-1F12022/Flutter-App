@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
@@ -17,6 +18,7 @@ class ProjectEnterScreen extends StatefulWidget {
 }
 
 class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
+  bool _load = false;
   Future _addProject() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
@@ -28,14 +30,29 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
       "equity": double.parse(_equityController.text.trim()) / 100,
     };
     // ignore: unused_local_variable
-    final response = await http.post(
-      url,
-      body: jsonEncode(data),
-      headers: {
-        "Authorization": "Bearer $token",
-        "Content-Type": "application/json",
-      },
-    );
+    try {
+      var response = await http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+      setState(() {
+        _load = false;
+      });
+      if (response.statusCode == 201) {
+        Fluttertoast.showToast(msg: "Project Added Successfully");
+      } else {
+        Fluttertoast.showToast(msg: "Something went wrong");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+      setState(() {
+        _load = false;
+      });
+    }
   }
 
   @override
@@ -126,15 +143,26 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.03,
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(255, 255, 169, 0),
-                            ),
-                            onPressed: () {
-                              _addProject();
-                            },
-                            child: Text('Add'),
-                          )
+                          _load
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 255, 169, 0),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _load = true;
+                                    });
+                                    _addProject();
+                                    _nameController.clear();
+                                    _descriptionController.clear();
+                                    _askingPriceController.clear();
+                                    _equityController.clear();
+                                  },
+                                  child: Text('Add'),
+                                )
                         ],
                       ),
                     ),

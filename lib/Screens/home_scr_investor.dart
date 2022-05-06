@@ -140,6 +140,7 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
             ),
             child: SafeArea(
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: Color.fromARGB(255, 255, 169, 0),
                   selectedItemColor: Colors.white,
