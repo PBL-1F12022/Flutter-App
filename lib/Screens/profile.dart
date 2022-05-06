@@ -48,12 +48,8 @@ class _ProfileState extends State<Profile> {
   getUserInfo() async {
     String? token = await storage.read(key: 'token');
     String? type = await storage.read(key: 'userType');
-    // token =
-    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjZiZmYyNDNmOWE3ZWUyMjgyNGMwZjYiLCJpYXQiOjE2NTE0MDE4NjR9.1umKWOSv8rWIhJZbnVlJSpCEEuD3PqQscobZiA8r4_A";
-    // type = "investor";
 
     if (token == null) {
-      print("User not logged in");
     } else {
       try {
         Map<String, String> headers = {"Authorization": "Bearer $token"};
@@ -90,7 +86,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(title: 'My Profile'),
+        appBar: const CustomAppBar(title: 'My Profile'),
         body: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(

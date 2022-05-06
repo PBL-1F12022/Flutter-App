@@ -38,6 +38,15 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
+  }
+
   bool _load = false;
   bool _isAutoLogin = false;
   bool _isLogin = false;
@@ -63,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
         });
       }
     } catch (e) {
-      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -86,8 +95,6 @@ class _SignupScreenState extends State<SignupScreen> {
           "Content-Type": "application/json",
         },
       );
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         await storage.write(key: 'token', value: result['token']);
@@ -252,163 +259,175 @@ class _SignupScreenState extends State<SignupScreen> {
                 : HomeScreenEntrepreneur()
             // ? MyDrawer()
             : Scaffold(
-                backgroundColor: Color(0xff292C31),
-                body: ScrollConfiguration(
-                  behavior: MyBehavior(),
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: height,
-                      width: width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(height: height * (15 / 100)),
-                          Expanded(
-                            flex: 4,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: height * (1 / 100),
-                                ),
-                                Text(
-                                  _isLogin ? 'LOG IN' : 'SIGN UP',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffA9DED8),
+                // backgroundColor: Color(0xff292C31),
+                resizeToAvoidBottomInset: false,
+                body: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: const AssetImage("assets/images/background.jpg"),
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.8), BlendMode.darken),
+                    ),
+                  ),
+                  child: ScrollConfiguration(
+                    behavior: MyBehavior(),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: height,
+                        width: width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(height: height * (15 / 100)),
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: height * (1 / 100),
                                   ),
-                                ),
-                                SizedBox(),
-                                Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        if (!_isLogin)
+                                  Text(
+                                    _isLogin ? 'LOG IN' : 'SIGN UP',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color.fromARGB(255, 255, 169, 0),
+                                    ),
+                                  ),
+                                  SizedBox(),
+                                  Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          if (!_isLogin)
+                                            textComponent(
+                                              height,
+                                              width,
+                                              false,
+                                              false,
+                                              false,
+                                              Icons.account_circle_outlined,
+                                              'Name',
+                                              _nameController,
+                                            ),
+                                          SizedBox(height: height * (2 / 100)),
                                           textComponent(
                                             height,
                                             width,
-                                            false,
-                                            false,
-                                            false,
-                                            Icons.account_circle_outlined,
-                                            'Name',
-                                            _nameController,
-                                          ),
-                                        SizedBox(height: height * (2 / 100)),
-                                        textComponent(
-                                          height,
-                                          width,
-                                          false,
-                                          true,
-                                          false,
-                                          Icons.email_outlined,
-                                          'Email',
-                                          _emailController,
-                                        ),
-                                        SizedBox(height: height * (2 / 100)),
-                                        if (!_isLogin)
-                                          textComponent(
-                                            height,
-                                            width,
-                                            false,
                                             false,
                                             true,
-                                            Icons.phone,
-                                            'Phone number',
-                                            _phoneController,
+                                            false,
+                                            Icons.email_outlined,
+                                            'Email',
+                                            _emailController,
                                           ),
-                                        SizedBox(height: height * (2 / 100)),
-                                        textComponent(
-                                          height,
-                                          width,
-                                          true,
-                                          false,
-                                          false,
-                                          Icons.password_outlined,
-                                          'Password',
-                                          _passwordController,
+                                          SizedBox(height: height * (2 / 100)),
+                                          if (!_isLogin)
+                                            textComponent(
+                                              height,
+                                              width,
+                                              false,
+                                              false,
+                                              true,
+                                              Icons.phone,
+                                              'Phone number',
+                                              _phoneController,
+                                            ),
+                                          SizedBox(height: height * (2 / 100)),
+                                          textComponent(
+                                            height,
+                                            width,
+                                            true,
+                                            false,
+                                            false,
+                                            Icons.password_outlined,
+                                            'Password',
+                                            _passwordController,
+                                          ),
+                                          SizedBox(height: height * (2 / 100)),
+                                        ],
+                                      )),
+                                  DropdownButton(
+                                    value: dropDownValue,
+                                    dropdownColor: Color(0xff292C31),
+                                    items: items.map((String items) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          items,
+                                          style: TextStyle(
+                                            color: Colors.white60,
+                                            fontSize: 17,
+                                          ),
                                         ),
-                                        SizedBox(height: height * (2 / 100)),
-                                      ],
-                                    )),
-                                DropdownButton(
-                                  value: dropDownValue,
-                                  dropdownColor: Color(0xff292C31),
-                                  items: items.map((String items) {
-                                    return DropdownMenuItem(
-                                      child: Text(
-                                        items,
-                                        style: TextStyle(
-                                          color: Colors.white60,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      value: items,
-                                    );
-                                  }).toList(),
-                                  icon: Icon(
-                                    Icons.arrow_drop_down_circle,
-                                    color: Colors.white60,
+                                        value: items,
+                                      );
+                                    }).toList(),
+                                    icon: Icon(
+                                      Icons.arrow_drop_down_circle,
+                                      color: Colors.white60,
+                                    ),
+                                    onChanged: (String? newVal) {
+                                      setState(() {
+                                        dropDownValue = newVal!;
+                                      });
+                                    },
                                   ),
-                                  onChanged: (String? newVal) {
-                                    setState(() {
-                                      dropDownValue = newVal!;
-                                    });
-                                  },
-                                ),
-                                _load
-                                    ? signupButtonLoad()
-                                    : _isLogin
-                                        ? dropDownValue ==
-                                                _userType.Investor.name
-                                            ? loginButton(
-                                                theme, context, 0, _isLogin)
-                                            : loginButton(
-                                                theme, context, 1, _isLogin)
-                                        : dropDownValue ==
-                                                _userType.Entrepreneur.name
-                                            ? signupButton(
-                                                theme,
-                                                context,
-                                                _userType.Entrepreneur.index,
-                                              )
-                                            : signupButton(
-                                                theme,
-                                                context,
-                                                _userType.Investor.index,
-                                              ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isLogin = !_isLogin;
-                                    });
-                                  },
-                                  child: !_isLogin
-                                      ? Text(
-                                          'Already a user?',
-                                          style: TextStyle(
-                                            color: Colors.white60,
-                                            fontSize: 20,
+                                  _load
+                                      ? signupButtonLoad()
+                                      : _isLogin
+                                          ? dropDownValue ==
+                                                  _userType.Investor.name
+                                              ? loginButton(
+                                                  theme, context, 0, _isLogin)
+                                              : loginButton(
+                                                  theme, context, 1, _isLogin)
+                                          : dropDownValue ==
+                                                  _userType.Entrepreneur.name
+                                              ? signupButton(
+                                                  theme,
+                                                  context,
+                                                  _userType.Entrepreneur.index,
+                                                )
+                                              : signupButton(
+                                                  theme,
+                                                  context,
+                                                  _userType.Investor.index,
+                                                ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isLogin = !_isLogin;
+                                      });
+                                    },
+                                    child: !_isLogin
+                                        ? Text(
+                                            'Already a user?',
+                                            style: TextStyle(
+                                              color: Colors.white60,
+                                              fontSize: 20,
+                                            ),
+                                          )
+                                        : Text(
+                                            'New user?',
+                                            style: TextStyle(
+                                              color: Colors.white60,
+                                              fontSize: 20,
+                                            ),
                                           ),
-                                        )
-                                      : Text(
-                                          'New user?',
-                                          style: TextStyle(
-                                            color: Colors.white60,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                ),
-                                SizedBox(height: height * (10 / 100)),
-                              ],
+                                  ),
+                                  SizedBox(height: height * (10 / 100)),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -471,7 +490,7 @@ class _SignupScreenState extends State<SignupScreen> {
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
         padding: EdgeInsets.all(10),
-        color: Colors.black,
+        color: Color.fromARGB(255, 255, 169, 0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -514,7 +533,7 @@ class _SignupScreenState extends State<SignupScreen> {
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
         padding: EdgeInsets.all(10),
-        color: Colors.black,
+        color: Color.fromARGB(255, 255, 169, 0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

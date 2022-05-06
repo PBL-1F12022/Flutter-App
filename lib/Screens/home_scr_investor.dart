@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Screens/my_investments_screen.dart';
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
-import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
+import 'package:pbl2022_app/Widgets/profile_card.dart';
 import 'package:pbl2022_app/Widgets/drawer_widget.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
@@ -38,15 +38,12 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
       final response = await http.get(Uri.parse(getProjectsUrl));
       if (response.statusCode == 200) {
         List data = jsonDecode(response.body);
-        print(data);
         for (var project in data) {
           projects.add(ProjectIdea.fromJson(project));
         }
         setState(() {
           _load = false;
         });
-        print(response.statusCode);
-        print(projects);
       } else {
         Fluttertoast.showToast(
           msg: 'Projects are not currently available',
@@ -82,9 +79,6 @@ class _HomeScreenInvestorState extends State<HomeScreenInvestor> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context).size;
-    final width = mediaQuery.width;
-    final height = mediaQuery.height;
     final List screens = [
       Container(
         decoration: BoxDecoration(

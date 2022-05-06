@@ -25,6 +25,7 @@ class _CoinsState extends State<Coins> {
   final TextEditingController _sellCoin = TextEditingController();
 
   bool _load = true;
+  // ignore: prefer_typing_uninitialized_variables
   late final type;
 
   Future getBalance() async {

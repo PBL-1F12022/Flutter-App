@@ -61,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    TransitionAnimationRightToLeft(ProjectEnterScreen()),
+                    TransitionAnimationRightToLeft(const ProjectEnterScreen()),
                   );
                 },
                 leading: const Icon(Icons.add, size: 30),

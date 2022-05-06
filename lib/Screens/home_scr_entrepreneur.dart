@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/Screens/my_projects_screen.dart';
-import 'package:pbl2022_app/Widgets/Entr_profile_card.dart';
+import 'package:pbl2022_app/Widgets/profile_card.dart';
 import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 import 'package:pbl2022_app/models/project_pitch.dart';
@@ -62,10 +62,6 @@ class _HomeScreenEntrepreneurState extends State<HomeScreenEntrepreneur> {
 
   @override
   void initState() {
-    // storage.deleteAll();
-    // Future.delayed(Duration.zero, () {});
-    // loadUserType();
-    print('Home screen called');
     getProjectsList();
     super.initState();
   }

@@ -51,7 +51,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           });
-      print(response.body);
+
       if (response.statusCode == 200) {
         Fluttertoast.showToast(
           msg: 'Project bookmarked',
@@ -102,7 +102,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   projectText(theme, mediaQuery),
-                  Container(
+                  SizedBox(
                     // decoration: BoxDecoration(border: Border.all()),
                     width: width * (95 / 100),
                     height: height * (20 / 100),
@@ -110,7 +110,7 @@ class _EnterProfileCardState extends State<EnterProfileCard> {
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
+                        SizedBox(
                           width: width * (45 / 100),
                           // decoration: BoxDecoration(border: Border.all()),
                           child: Column(

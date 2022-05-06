@@ -9,7 +9,7 @@ import 'package:pbl2022_app/constants/size_constants.dart';
 import 'package:pbl2022_app/constants/urls.dart';
 
 class ProjectEnterScreen extends StatefulWidget {
-  ProjectEnterScreen({Key? key}) : super(key: key);
+  const ProjectEnterScreen({Key? key}) : super(key: key);
   static const routeName = '/project_enter_screen';
 
   @override
@@ -27,6 +27,7 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
       "askingPrice": int.parse(_askingPriceController.text.trim()),
       "equity": double.parse(_equityController.text.trim()) / 100,
     };
+    // ignore: unused_local_variable
     final response = await http.post(
       url,
       body: jsonEncode(data),
@@ -35,13 +36,14 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
         "Content-Type": "application/json",
       },
     );
-    print(response.body);
-    print(response.statusCode);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _askingPriceController.dispose();
+    _equityController.dispose();
     super.dispose();
   }
 

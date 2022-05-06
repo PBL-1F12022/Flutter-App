@@ -8,8 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/constants/urls.dart';
 
+// ignore: must_be_immutable
 class InvestorDetails extends StatefulWidget {
-  String id='';
+  String id = '';
 
   InvestorDetails({Key? key, required this.id}) : super(key: key);
   static const routeName = '/investor_details_screen';
@@ -36,7 +37,6 @@ class _InvestorDetailsState extends State<InvestorDetails> {
         },
       );
       if (response.statusCode == 200) {
-        print(response.body);
         setState(() {
           data = jsonDecode(response.body);
           for (var map in data) {
@@ -72,7 +72,7 @@ class _InvestorDetailsState extends State<InvestorDetails> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final height = mediaQuery.size.height;
-    final width = mediaQuery.size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Investors List'),

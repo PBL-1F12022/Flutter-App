@@ -32,7 +32,7 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
         "Authorization": "Bearer $token",
       },
     );
-    print(response.body);
+
     final data = jsonDecode(response.body);
     setState(() {
       investments = data;
@@ -90,7 +90,7 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: width * (60 / 100),
                                         child: Column(
                                           crossAxisAlignment:

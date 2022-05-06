@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,7 +40,6 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
           backgroundColor: Colors.blue.shade600,
         );
       }
-      print(response.body);
     } catch (e) {
       Fluttertoast.showToast(
         msg: 'Something went wrong please try again later!',
@@ -78,17 +76,10 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
               ? Center(child: CircularProgressIndicator())
               : ListView.builder(
                   itemCount: data.length,
-                  itemBuilder: (contex, index) {
+                  itemBuilder: (context, index) {
                     curID = data[index]['_id'];
                     return GestureDetector(
                       onTap: () {
-                        // Navigator.of(context).pushNamed(
-                        //   InvestorDetails.routeName,
-                        //   arguments: curID,
-                        // );
-                        var abc = GestureBinding.instance;
-                        // curID = GestureBinding.instance.;
-                        print(curID);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
