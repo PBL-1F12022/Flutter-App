@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,39 +62,42 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          // Navigator.of(context).pushNamed(
-          //   InvestorDetails.routeName,
-          //   arguments: curID,
-          // );
-          print(curID);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => InvestorDetails(id: curID),
-            ),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: const AssetImage("assets/images/background.jpg"),
-              fit: BoxFit.fill,
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.8), BlendMode.darken),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.fill,
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.8), BlendMode.darken),
           ),
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: !_isLoaded
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (contex, index) {
-                      curID = data[index]['_id'];
-                      return Padding(
+        ),
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: !_isLoaded
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (contex, index) {
+                    curID = data[index]['_id'];
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigator.of(context).pushNamed(
+                        //   InvestorDetails.routeName,
+                        //   arguments: curID,
+                        // );
+                        var abc = GestureBinding.instance;
+                        // curID = GestureBinding.instance.;
+                        print(curID);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                InvestorDetails(id: data[index]['_id']),
+                          ),
+                        );
+                      },
+                      child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: AspectRatio(
@@ -181,6 +185,25 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
+                                      // GestureDetector(
+                                      //   onTap: () {
+                                      //     // Navigator.of(context).pushNamed(
+                                      //     //   InvestorDetails.routeName,
+                                      //     //   arguments: curID,
+                                      //     // );
+                                      //     var abc = GestureBinding.instance;
+                                      //     // curID = GestureBinding.instance.;
+                                      //     print(curID);
+                                      //     Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             InvestorDetails(
+                                      //                 id: data[index]['_id']),
+                                      //       ),
+                                      //     );
+                                      //   },
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -189,6 +212,7 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
                                   color: Colors.white,
                                   size: 100,
                                 ),
+
                                 // Image(
                                 //   image: NetworkImage(
                                 //     'https://c8.alamy.com/zooms/9/740e1ea2478b41efab9000300b84521b/r1t00k.jpg',
@@ -199,20 +223,20 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
                             ),
                           ),
                         ),
-                      );
-                      // return EnterProfileCard(
-                      //   askingPrice: data[index]['askingPrice'],
-                      //   description: data[index]['description'],
-                      //   equity: data[index]['equity'],
-                      //   id: data[index]['_id'],
-                      //   owner: 'You',
-                      //   projName: data[index]['name'],
-                      //   sector: data[index]['sector'],
-                      //   sectorAccuracy: data[index]['sectorAccuracy'],
-                      //   userType: 'entrepreneur',
-                      // );
-                    }),
-          ),
+                      ),
+                    );
+                    // return EnterProfileCard(
+                    //   askingPrice: data[index]['askingPrice'],
+                    //   description: data[index]['description'],
+                    //   equity: data[index]['equity'],
+                    //   id: data[index]['_id'],
+                    //   owner: 'You',
+                    //   projName: data[index]['name'],
+                    //   sector: data[index]['sector'],
+                    //   sectorAccuracy: data[index]['sectorAccuracy'],
+                    //   userType: 'entrepreneur',
+                    // );
+                  }),
         ),
       ),
     );

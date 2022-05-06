@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:pbl2022_app/constants/urls.dart';
 
 class InvestorDetails extends StatefulWidget {
-  String id;
+  String id='';
 
   InvestorDetails({Key? key, required this.id}) : super(key: key);
   static const routeName = '/investor_details_screen';
