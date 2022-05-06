@@ -128,6 +128,8 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
                           ),
                           TextFormField(
                             controller: _askingPriceController,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                             decoration: InputDecoration(
                               icon: Icon(Icons.currency_rupee),
                               label: Text('Asking price'),
@@ -135,6 +137,8 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
                           ),
                           TextFormField(
                             controller: _equityController,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                             decoration: InputDecoration(
                               icon: Icon(Icons.percent),
                               label: Text('Equity'),
@@ -151,11 +155,11 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
                                   style: ElevatedButton.styleFrom(
                                     primary: Color.fromARGB(255, 255, 169, 0),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
                                       _load = true;
                                     });
-                                    _addProject();
+                                    await _addProject();
                                     _nameController.clear();
                                     _descriptionController.clear();
                                     _askingPriceController.clear();
