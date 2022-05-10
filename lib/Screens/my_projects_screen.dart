@@ -35,9 +35,12 @@ class _MyProjectsScreenState extends State<MyProjectsScreen> {
           _isLoaded = true;
         });
       } else {
+        setState(() {
+          _isLoaded = true;
+        });
         Fluttertoast.showToast(
-          msg: 'No investments yet!',
-          backgroundColor: Colors.blue.shade600,
+          msg: 'No projects yet!',
+          backgroundColor: Colors.red,
         );
       }
     } catch (e) {

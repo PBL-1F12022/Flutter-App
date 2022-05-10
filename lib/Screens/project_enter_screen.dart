@@ -29,7 +29,6 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
       "askingPrice": int.parse(_askingPriceController.text.trim()),
       "equity": double.parse(_equityController.text.trim()) / 100,
     };
-    // ignore: unused_local_variable
     try {
       var response = await http.post(
         url,
@@ -103,7 +102,7 @@ class _ProjectEnterScreenState extends State<ProjectEnterScreen> {
                   ),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
