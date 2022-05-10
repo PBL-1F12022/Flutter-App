@@ -66,7 +66,14 @@ class _MyInvestmentsScreenState extends State<MyInvestmentsScreen> {
           child: Center(
             child: _isFetched
                 ? investments.isEmpty
-                    ? Text('No Investments')
+                    ? Text(
+                        'No Investments yet!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: investments.length,
                         itemBuilder: (context, index) {
